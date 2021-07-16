@@ -97,11 +97,6 @@ plt.show()
 
 
 
-
-
-
-
-
 # class ProbabilityDistribution:
 
 #     def __init__(self,type,d,hyperparams):
