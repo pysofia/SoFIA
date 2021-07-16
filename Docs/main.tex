@@ -1,0 +1,50 @@
+\newcommand{\myname}{\textbf{A. del Val}}
+
+\documentclass[12pt]{article}
+\usepackage{sectsty}
+%%%% Remove if not good %%%
+
+\usepackage{geometry}
+\geometry{a4paper, margin=1.1in, top=0.8in}
+
+%%%%%%%
+\usepackage{longtable}
+\pagenumbering{gobble}
+
+\title{\large \textbf{SoFIA: So}bol-based sensitivity analysis, \textbf{F}orward and \textbf{I}nverse uncertainty propagation with \textbf{A}pplications to high temperature gases}
+\date{}
+\sectionfont{\fontsize{12}{15}\selectfont}
+\begin{document}
+\maketitle
+% \thispagestyle{fancy}
+\vspace{-1.8cm}
+\begin{center}
+\textbf{Anabel del Val}\\
+\vspace{0.5cm}
+25/06/2021
+\end{center}
+
+\section{Purpose and philosophy of this library}
+
+This library was born out of my PhD studies. The code and tools initially available here are the ones I developed for my research. This library is not meant to be an exhaustive library such as \textit{scikit-learn} but a platform where I deposit my tools after cleaning them and making them more user-friendly. If you go online and type something like: UQ python, you'll find a myriad libraries so why developing my own? I also asked myself this question for a long time, and whenever possible, I used libraries that were already available. Libraries that are developed by a large group of individuals are generally better thought out, more efficient, more robust to changes, and they probably already have all you need. SoFIA is not a library for people wanting to do UQ in general. Other libraries are better. SoFIA is meant to fill-in the gap between the aerothermodynamics community and the UQ community.
+
+Aerothermodynamicists in general have many other things to worry about in their research. We deal with complicated models and experimental facilities, and it is not often the case that we have the required mathematical background to do UQ. Therefore, looking for general purpose UQ libraries can be quite scary and burdensome. Our models are complex and so is our data. If you know me, you know that my PhD research was oriented towards developing UQ (in particular Bayesian) methodologies for their efficient use in aerothermodynamics models and experimental data. Based on that knowledge, I would assume you have come to SoFIA because whatever is in here will suit you as an aerothermodynamicist without the need to bend over backwards trying to understand those obscure mathematicians in search for a proper library.
+
+I have often found libraries that do uncertainty propagation or Bayesian inference to be very naive. I'll explain myself. They generally use data formats that are only apt to be used with python functions. They assume the model you want to do UQ on is defined on python, which is generally not the case for our community. Working around these issues often require more work than just coding the whole thing yourself. Yes, such libraries have lots of modules and functionalities but it is not so worth to pay the price of having to adapt your model (that very complex code, made by many people's contributions over many years) to suit those libraries needs. That's the philosophy out of which SoFIA is conceived.
+
+SoFIA contains the methods I needed to use during my PhD, nothing more. The methods are implemented in a way that it is very open to suit different models' needs. In general, SoFIA offers a workflow where you can generate samples of input variables that need to be used by the code of your choice. Then you can come back to SoFIA with the evaluations of the model and use other functionalities like computing Sobol indices or fitting a Gaussian Process model. SoFIA does not handle your model for you or ask you to format the model in a specific way. This is great for obtaining full flexibility while enjoying the library's methods.
+
+Finally, the purpose of SoFIA is to also grow. If you happen to need to implement a new method, you can do so and merge it to the rest of SoFIA, so that the library keeps growing.
+
+\section{Structure}
+
+In within the SoFIA library, different modules can be found. This section is structured according to the different modules that can be found in SoFIA.\\
+
+\noindent\textbf{Sensitivity Analysis.}
+
+\section{Usage}
+
+\section{Examples}
+
+
+\end{document}
