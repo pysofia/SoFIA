@@ -50,32 +50,32 @@ class Uniform:
             values[i] += self.get_one_pdf_value(x[i],pos)
         return values
 
-class LogUniform:
+# class LogUniform:
 
-    def __init__(self,d,hyperparams):
-        self.dim = d
-        self.hyperparams = hyperparams #matrix or vector, depends on dimensions
+#     def __init__(self,d,hyperparams):
+#         self.dim = d
+#         self.hyperparams = hyperparams #matrix or vector, depends on dimensions
 
-        self.lb = [0.]*self.dim
-        self.ub = [0.]*self.dim
+#         self.lb = [0.]*self.dim
+#         self.ub = [0.]*self.dim
 
-        for i in range(self.dim):
-            self.lb[i] = np.log10(self.hyperparams[i][0])
-            self.ub[i] = np.log10(self.hyperparams[i][1])
+#         for i in range(self.dim):
+#             self.lb[i] = np.log10(self.hyperparams[i][0])
+#             self.ub[i] = np.log10(self.hyperparams[i][1])
 
-        self.hypvol = np.abs(np.subtract(self.ub,self.lb))
+#         self.hypvol = np.abs(np.subtract(self.ub,self.lb))
 
-    def get_one_pdf_value(self,x,pos): 
-        if np.log10(x)>=self.lb[pos] and np.log10(x)<=self.ub[pos]:
-            return np.divide(1,np.prod(self.hypvol))
-        else:
-            return 0.
+#     def get_one_pdf_value(self,x,pos): 
+#         if np.log10(x)>=self.lb[pos] and np.log10(x)<=self.ub[pos]:
+#             return np.divide(1,np.prod(self.hypvol))
+#         else:
+#             return 0.
 
-    def get_pdf_values(self,x,pos):
-        values = [0.]*len(x)
-        for i in range(len(x)):
-            values[i] = self.get_one_pdf_value(x[i],pos)
-        return values
+#     def get_pdf_values(self,x,pos):
+#         values = [0.]*len(x)
+#         for i in range(len(x)):
+#             values[i] = self.get_one_pdf_value(x[i],pos)
+#         return values
 
 hyp = [[0.0001,1.]]
 Ps = LogUniform(1,hyp)
