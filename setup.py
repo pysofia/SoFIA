@@ -5,7 +5,7 @@ setup(
     version='0.1',
     packages=['sofia'],
     url='https://github.com/pysofia/SoFIA',
-    license='',
+    license='GPLv3',
     author='Anabel del Val',
     author_email='',
     description='Sobol-based sensitivity analysis, Forward and Inverse uncertainty propagation with Application to high temperature gases.',
