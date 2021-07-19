@@ -1,3 +1,3 @@
 
 ## SoFIA
-Sobol sensitivity analysis, Forward and Inverse uncertainty propagation with Application to high temperature gases
+**So**bol sensitivity analysis, **F**orward and **I**nverse uncertainty propagation with **A**pplication to high temperature gases

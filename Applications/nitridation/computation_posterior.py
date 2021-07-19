@@ -38,23 +38,8 @@ def ve_betae(X): # X = (T, pres, Pd)
     return vect
 
 ## Priors ##
-def Gnit_value(x):
-    return np.power(10.,-4.+x*4.)
-
-def Grec_value(x):
-    return np.power(10.,-4.+x*4.)
-
-def Ps_value(x):
-    return 1200. + x*500.
-
-def Tw_value(x):
-    return 2000. + x*2000.
-
-def Te_value(x):
-    return 9000. + x*4000.
-
-def Pd_value(x):
-    return 200. + x*160.
+hyp = [[-4.,0.],[-4.,0.],[1200.,1700.],[2000.,4000.],[9000.,13000.],[200,360.]] # [Gnit,Grec,Ps,Tw,Te,Pd]
+prior = dist.Uniform(6,hyp)
 
 ##
 
@@ -66,6 +51,16 @@ def rec(V):
     return GP_rec.predict(V)
 
 ##
+
+## Likelihood
+h=[[1500.,22.5],[0.8e-06,1.0e-07],[2410.,12.05],[268.,2.68],[1.64e-06,0.275e-06]] # [Ps,rho,Tw,Pd,rec]
+Lik = dist.Gaussian(5,h)
+
+def log_likelihood(Xi):
+    value = 0.
+    for i in range(len(h)):
+        value += np.log(Lik.get_one_pdf_value(Xi[i],i))
+    return value
 
 ## log Likelihood to sample from ##
 def log_Lik(Xi):
