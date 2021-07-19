@@ -5,13 +5,23 @@ import matplotlib.pyplot as plt
 
 class metropolis:
 
+    """
+
+        This class creates a Metropolis-Hastings sampler (MCMC chain) with classical adaptation of the covariance matrix through a burn-in stage.
+
+        INPUTS: Initial covariance matrix, the posterior (log-posterior, proportional), and number of samples to adapt the covariance matrix (burning stage)
+
+        OUTPUTS: seed function to set some initial parameters of the chain, move one step by an accept-reject procedure, burning stage whose samples are used to adapt the covariance matrix. Other utilities are included to ease the use and bug finding.
+
+    """
+
     def __init__(self, covinit, fun_in, nburn):
         self.cov = covinit
         self.fun = fun_in
         self.Tac = [0.]*nburn
         self.d = len(covinit)
         self.CovDev = np.linalg.cholesky(self.cov*(2.38*2.38)/self.d)
-        # np.random.seed(2)
+        # np.random.seed(2) # Comment or uncomment depending if you are trying to compare results and don't want stochastic noise.
 
     def seed(self,xini):
         self.xcur = xini
@@ -96,6 +106,16 @@ class metropolis:
         self.DecCov()
 
 class diagnostics:
+
+    """
+
+        This class creates a diagnostics object by computing different widely accepted metrics for studying the convergence of the MCMC chain.
+
+        INPUTS: MCMC chain (array of values) and a dictionary of variables. Each variable is attached to a number according to its position in the MCMC chain. The number can be associated to a name in the dictionary for plotting.
+
+        OUTPUTS: Autocorrelation function, visualization of the chain.
+
+    """
 
     def __init__(self,chain,dict_var):
         self.chain = chain

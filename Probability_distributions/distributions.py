@@ -1,10 +1,18 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy import special
 from scipy.stats import norm
-import seaborn as sns
 
 class Gaussian:
+
+    """
+
+        This class creates a Gaussian distribution object of uncorrelated variables in arbitrary dimension.
+
+        INPUTS: Number of dimensions and hyperparameters: mean, variance. Along with instantiating a class object, we can compute PDF and CDF values and generate random samples
+
+        OUTPUTS: A single value of the Gaussian PDF for each independent variable, an array of PDF values, a single CDF value, an array of CDF values, random samples.
+
+    """
 
     def __init__(self,d,hyperparams):
         self.dim = d
@@ -55,6 +63,18 @@ class Gaussian:
 
 class Uniform:
 
+    """
+
+        This class creates a Uniform distribution object of uncorrelated variables in arbitrary dimension.
+
+        INPUTS: Number of dimensions and hyperparameters: lower and upper bounds. Along with instantiating a class object, we can compute PDF and CDF values and generate random samples
+
+        OUTPUTS: A single value of the uniform PDF for each independent variable, an array of PDF values, a single CDF value, an array of CDF values, random samples.
+
+        REMARK: This class can also be used with logarithmic values to compute the same properties for a Log-Uniform distribution
+
+    """
+
     def __init__(self,d,hyperparams):
         self.dim = d
         self.hyperparams = hyperparams #matrix or vector, depends on dimensions
@@ -66,11 +86,12 @@ class Uniform:
             self.lb[i] = self.hyperparams[i][0]
             self.ub[i] = self.hyperparams[i][1]
 
-        self.hypvol = np.subtract(self.ub,self.lb)
+        # self.hypvol = np.subtract(self.ub,self.lb)
 
+    # PDF
     def get_one_pdf_value(self,x,pos): 
         if x>=self.lb[pos] and x<=self.ub[pos]:
-            return np.divide(1,np.prod(self.hypvol))
+            return np.divide(1,self.ub[pos]-self.lb[pos])
         else:
             return 0.
 
@@ -80,46 +101,38 @@ class Uniform:
             values[i] += self.get_one_pdf_value(x[i],pos)
         return values
 
-# class LogUniform:
+    # CDF
+    def get_one_cdf_value(self,x,pos): 
+        if x<self.lb[pos]:
+            return 0.
+        elif x>=self.lb[pos] and x<=self.ub[pos]:
+            return np.divide(x-self.lb[pos],self.ub[pos]-self.lb[pos])
+        else:
+            return 1.
 
-#     def __init__(self,d,hyperparams):
-#         self.dim = d
-#         self.hyperparams = hyperparams #matrix or vector, depends on dimensions
+    def get_cdf_values(self,x,pos):
+        values = [0.]*len(x)
+        for i in range(len(x)):
+            values[i] += self.get_one_cdf_value(x[i],pos)
+        return values
 
-#         self.lb = [0.]*self.dim
-#         self.ub = [0.]*self.dim
+    # Inverse CDF
+    def inv_cdf(self,x,pos):
+        if x<=0.:
+            return self.lb[pos]
+        elif x>=self.lb[pos] and x<=self.ub[pos]:
+            return (self.ub[pos]-self.lb[pos])*x + self.lb[pos]
+        else:
+            return self.ub[pos]
 
-#         for i in range(self.dim):
-#             self.lb[i] = np.log10(self.hyperparams[i][0])
-#             self.ub[i] = np.log10(self.hyperparams[i][1])
+    # Generate random samples
+    def get_one_sample(self,pos):
+        u = np.random.random()
+        return self.inv_cdf(u,pos)
 
-#         self.hypvol = np.abs(np.subtract(self.ub,self.lb))
+    def get_samples(self,pos,nsamples):
+        values = [0.]*nsamples
+        for i in range(nsamples):
+            values[i] = self.get_one_sample(pos)
 
-#     def get_one_pdf_value(self,x,pos): 
-#         if np.log10(x)>=self.lb[pos] and np.log10(x)<=self.ub[pos]:
-#             return np.divide(1,np.prod(self.hypvol))
-#         else:
-#             return 0.
-
-#     def get_pdf_values(self,x,pos):
-#         values = [0.]*len(x)
-#         for i in range(len(x)):
-#             values[i] = self.get_one_pdf_value(x[i],pos)
-#         return values
-
-hyp = [[8.,0.2]]
-h = [[0.,5.]]
-
-Ps = Gaussian(1,hyp)
-P = Gaussian(1,h)
-
-x = np.linspace(0.00001,10.,1000)
-y = np.linspace(-8.,8.,1000)
-
-plt.plot(y,Ps.get_cdf_values(y,0))
-plt.plot(y,P.get_cdf_values(y,0))
-# plt.xscale('log')
-plt.show()
-
-sns.kdeplot(Ps.get_samples(0,10000))
-plt.show()
+        return values
