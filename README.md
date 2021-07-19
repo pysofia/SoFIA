@@ -13,8 +13,8 @@ in atmospheric entry plasmas, Institut Polytechnique de Paris/VKI, 2021.
 @phdthesis{del Val,
 	Author = {A. del Val},
 	School = {IPP/VKI},
-	Title = "{Bayesian calibration and assessment of gas-surface interaction models and experiments
-    in atmospheric entry plasmas}",
+	Title = "{Bayesian calibration and assessment of gas-surface interaction models 
+    and experiments in atmospheric entry plasmas}",
 	Year = {2021}
 }
 ```
