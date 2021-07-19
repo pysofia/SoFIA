@@ -5,9 +5,8 @@
 ## Citing SoFIA methodologies++
 Please cite the following PhD thesis when mentioning methodologies and applications in SoFIA in your own papers.
 
-* del Val, A. [Bayesian calibration and assessment of gas-surface interaction models and experiments
-in atmospheric entry plasmas]
-<br>Institut Polytechnique de Paris/VKI, 2021.
+* del Val, A., Bayesian calibration and assessment of gas-surface interaction models and experiments
+in atmospheric entry plasmas, Institut Polytechnique de Paris/VKI, 2021.
 
 **Bibtex**
 ```bibtex
@@ -15,7 +14,7 @@ in atmospheric entry plasmas]
 	Author = {A. del Val},
 	School = {IPP/VKI},
 	Title = "{Bayesian calibration and assessment of gas-surface interaction models and experiments
-in atmospheric entry plasmas}",
+    in atmospheric entry plasmas}",
 	Year = {2021}
 }
 ```
