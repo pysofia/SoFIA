@@ -60,7 +60,7 @@ Lik = dist.Gaussian(5,h)
 def log_likelihood(Xi):
     value = 0.
     for i in range(len(h)):
-        value += np.log(Lik.get_one_pdf_value(Xi[i],i))
+        value += np.log(Lik.get_one_pdf_value(Xi[i],i)*prior)
     return value
 
 ## log Likelihood to sample from ##
