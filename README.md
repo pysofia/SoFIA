@@ -2,7 +2,7 @@
 ## SoFIA
 **So**bol-based sensitivity analysis, **F**orward and **I**nverse uncertainty propagation with **A**pplication to high temperature gases.
 
-## Citing SoFIA methodologies++
+## Citing SoFIA methodologies ##
 Please cite the following PhD thesis when mentioning methodologies and applications in SoFIA in your own papers.
 
 * del Val, A., Bayesian calibration and assessment of gas-surface interaction models and experiments
