@@ -52,10 +52,11 @@ def rec(V):
 
 ##
 
-## Likelihood
+## Likelihood definition
 h=[[1500.,22.5],[0.8e-06,1.0e-07],[2410.,12.05],[268.,2.68],[1.64e-06,0.275e-06]] # [Ps,rho,Tw,Pd,rec]
 Lik = dist.Gaussian(5,h)
 
+## Log-likelihood function
 def log_likelihood(Xi):
     value = 0.
     for i in range(len(h)):
