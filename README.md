@@ -8,6 +8,8 @@ The theoretical aspects of the applications included in SoFIA can be found in th
 * del Val, A., Bayesian calibration and assessment of gas-surface interaction models and experiments
 in atmospheric entry plasmas, Institut Polytechnique de Paris/VKI, 2021.
 
+If they are used they should be cited as:
+
 **Bibtex**
 ```bibtex
 @phdthesis{del Val,
