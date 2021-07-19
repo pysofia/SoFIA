@@ -10,11 +10,11 @@ import mutationpp as mpp
 import distributions as dist
 
 ## Setting up Mutation++ options and mixture
-opts = mpp.MixtureOptions("air_11")
+opts = mpp.MixtureOptions("nitrogen-ions-carbon_9_olynick99")
 opts.setThermodynamicDatabase("RRHO")
 opts.setStateModel("ChemNonEq1T")
 
-mix = mpp.Mixture("air_11")
+mix = mpp.Mixture("nitrogen-ions-carbon_9_olynick99")
 mix = mpp.Mixture(opts)
 
 ##
@@ -163,7 +163,7 @@ for i in range(nchain):
 
 XMCMC = np.array(XMCMC)
 
-with open('./chain.dat','w') as ch:
+with open('./chain_nit.dat','w') as ch:
     for i in range(len(XMCMC)):
         ch.write(str(XMCMC[i,0])+' '+str(XMCMC[i,1])+' '+str(XMCMC[i,2])+' '+str(XMCMC[i,3])+' '+str(XMCMC[i,4])+' '+str(XMCMC[i,5])+'\n')
 
