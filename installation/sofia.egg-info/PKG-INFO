@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: sofia
+Version: 0.1
+Summary: Sobol-based sensitivity analysis, Forward and Inverse uncertainty propagation with Application to high temperature gases.
+Home-page: https://github.com/pysofia/SoFIA
+Author: Anabel del Val
+Author-email: UNKNOWN
+License: GPLv3
+Description: UNKNOWN
+Platform: UNKNOWN

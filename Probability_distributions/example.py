@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import distributions as dist
+import sofia.distributions as dist
 
 # 1D Uniform
 hyp = [[-8.,8.]]

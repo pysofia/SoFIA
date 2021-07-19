@@ -1,0 +1,10 @@
+setup.py
+sofia/Sobol.py
+sofia/__init__.py
+sofia/distributions.py
+sofia/sampler.py
+sofia.egg-info/PKG-INFO
+sofia.egg-info/SOURCES.txt
+sofia.egg-info/dependency_links.txt
+sofia.egg-info/requires.txt
+sofia.egg-info/top_level.txt

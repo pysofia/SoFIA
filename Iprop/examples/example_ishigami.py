@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy import random
 import seaborn as sns
-import sampler as mcmc
+import sofia.sampler as mcmc
 
 # Data-generating function
 def ishigami (x,y,z,a,b):

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import sampler as mcmc
+import sofia.sampler as mcmc
 
 ## 2D Gaussian
 def func(par):

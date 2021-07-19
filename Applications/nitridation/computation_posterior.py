@@ -3,11 +3,11 @@ import scipy
 from sklearn import gaussian_process
 from sklearn.gaussian_process.kernels import Matern, RBF
 from scipy.optimize import minimize
-import sampler as mcmc
+import sofia.sampler as mcmc
 import seaborn as sns
 import matplotlib.pyplot as plt
 import mutationpp as mpp
-import distributions as dist
+import sofia.distributions as dist
 
 ## Setting up Mutation++ options and mixture
 opts = mpp.MixtureOptions("nitrogen-ions-carbon_9_olynick99")

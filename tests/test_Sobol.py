@@ -1,5 +1,5 @@
 import unittest
-import Sobol as sbl
+import sofia.Sobol as sbl
 
 class TestSob(unittest.TestCase):
 

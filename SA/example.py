@@ -1,4 +1,4 @@
-import Sobol as sbl
+import sofia.Sobol as sbl
 import numpy as np
 
 def ishigami (x,y,z,a,b):
