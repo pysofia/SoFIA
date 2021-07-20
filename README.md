@@ -6,10 +6,12 @@
 
 To install SoFIA just do in your terminal in the directory of your choice
 
-**Bibtex**
+```
 git clone https://github.com/pysofia/SoFIA.git
 cd path_to_sofia/installation
 python3 setup.py install 
+
+```
 
 ## SoFIA applications ##
 The theoretical aspects of the applications included in SoFIA can be found in the following PhD thesis:
