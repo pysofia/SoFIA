@@ -10,11 +10,11 @@ import mutationpp as mpp
 import sofia.distributions as dist
 
 ## Setting up Mutation++ options and mixture
-opts = mpp.MixtureOptions("nitrogen-ions-carbon_9_olynick99")
+opts = mpp.MixtureOptions("air_11")
 opts.setThermodynamicDatabase("RRHO")
 opts.setStateModel("ChemNonEq1T")
 
-mix = mpp.Mixture("nitrogen-ions-carbon_9_olynick99")
+mix = mpp.Mixture("air_11")
 mix = mpp.Mixture(opts)
 
 ##
@@ -38,14 +38,10 @@ def ve_betae(X): # X = (T, pres, Pd)
     return vect
 
 ## Priors ##
-hyp = [[-4.,0.],[-4.,0.],[1200.,1700.],[2000.,4000.],[9000.,13000.],[200,360.]] # [Gnit,Grec,Ps,Tw,Te,Pd]
+hyp = [[-4.,0.],[-4.,0.],[1200.,1700.],[2000.,4000.],[200,360.],[9000.,13000.]] # [Gnit,Grec,Ps,Tw,Pd,Te]
 prior = dist.Uniform(6,hyp)
 
 ##
-
-# Denormalization
-# def denormalization(Xi,hyp,pos):
-#     return hyp[pos][0]+Xi[pos]*(hyp[pos][1]-hyp[pos][0])
 
 ## GP models ##
 def rho(V):
@@ -57,21 +53,46 @@ def rec(V):
 ##
 
 ## Likelihood definition
-h=[[1500.,22.5],[0.8e-06,1.0e-07],[2410.,12.05],[268.,2.68],[1.64e-06,0.275e-06]] # [Ps,rho,Tw,Pd,rec]
+h=[[1500.,22.5],[2410.,12.05],[268.,2.68],[1.64e-06,0.275e-06],[0.8e-06,1.0e-07]] # [Ps,Tw,Pd,rec,rho]
 Lik = dist.Gaussian(5,h)
 
 ## Log-likelihood function
 def log_likelihood(Xi):
+
+    for i in range(len(Xi)):
+        if Xi[i]<0:
+            return -1.e16
+        elif Xi[i]>1:
+            return -1.e16
+
+    V = np.zeros(7)
+    V[0] += Xi[2] # //Ps
+    V[1] += Xi[3] # //Tw
+    V[2] += Xi[4] # //Te
+    V[5] += Xi[0] # //Gnit
+    V[6] += Xi[1] # //Grec
+
+    X = np.zeros(3)
+    X[0] += prior.lb[5]+(Xi[5]*(prior.ub[5]-prior.lb[5]))
+    X[1] += prior.lb[2]+(Xi[2]*(prior.ub[2]-prior.lb[2]))
+    X[2] += prior.lb[4]+(Xi[4]*(prior.ub[4]-prior.lb[4]))
+
+    ve, betae = ve_betae(X)
+
+    V[3] += (ve - 300.)/900. # //ve
+    V[4] += (betae - 20000.)/44000. # //beta e
+    V = [V]
+
     value = 0.
-    for i in range(len(h)):
-        value += np.log(Lik.get_one_pdf_value(Xi[i],i)*prior.get_one_pdf_value(Xi[i],i))
+    for i,j in zip(range(3),range(3)):
+        value += np.log(Lik.get_one_pdf_value(prior.lb[j+2]+(Xi[j+2]*(prior.ub[j+2]-prior.lb[j+2])),i)+1.e-16)
+
+    value += np.log(Lik.get_one_pdf_value(np.power(10,rec(V)),3)+1.e-16)+np.log(Lik.get_one_pdf_value(np.power(10,rho(V)),4)+1.e-16)
+
     return value
 
-def m_log_likelihood(Xi):
-    value = 0.
-    for i in range(len(h)):
-        value += -1*np.log(Lik.get_one_pdf_value(Xi[i],i)*prior.get_one_pdf_value(Xi[i],i))
-    return value
+# def m_log_likelihood(Xi):
+#     return -1*log_likelihood(Xi)
 
 ## log Likelihood to sample from ##
 # def log_Lik(Xi):
@@ -150,13 +171,13 @@ GP_rho.fit(X, Y[:,1])
 
 ## Looking for the MAP point to start sampling ##
 Xi = [0.5]*6
-res = scipy.optimize.minimize(m_log_likelihood,Xi,method='Nelder-Mead',tol=1e-6)
-print("MAP found at: "+str(res.x))
+# res = scipy.optimize.minimize(m_log_likelihood,Xi,method='Nelder-Mead',tol=1e-6)
+# print("MAP found at: "+str(res.x))
 
 # MCMC sampling
 sampler = mcmc.metropolis(np.identity(6)*0.01,log_likelihood,100000)
 
-par = res.x
+par = Xi
 sampler.seed(par)
 sampler.Burn()
 
