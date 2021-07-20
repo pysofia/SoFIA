@@ -1,4 +1,7 @@
+.DS_Store
 setup.py
+dist/sofia-0.1-py3.6.egg
+sofia/.DS_Store
 sofia/Sobol.py
 sofia/__init__.py
 sofia/distributions.py

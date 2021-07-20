@@ -27,7 +27,7 @@ class Gaussian:
 
     # PDF
     def get_one_pdf_value(self,x,pos): 
-        return np.divide(1,np.sqrt(2*math.py)*self.sigma[pos])*np.exp(-np.power(np.abs(self.mu[pos] - x),2)/(2*np.power(self.sigma[pos],2)))
+        return np.divide(1,np.sqrt(2*3.141592653589793)*self.sigma[pos])*np.exp(-np.power(np.abs(self.mu[pos] - x),2)/(2*np.power(self.sigma[pos],2)))
 
     def get_pdf_values(self,x,pos):
         values = [0.]*len(x)
