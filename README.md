@@ -4,13 +4,12 @@
 
 ## Installation ##
 
-To install SoFIA just do in your terminal in the directory of your choice
+To install SoFIA just do in your terminal in the directory of your choice (python3 or python depending on how you use your local python installation)
 
 ```
 git clone https://github.com/pysofia/SoFIA.git
-cd path_to_sofia/installation
+cd SoFIA/installation
 python3 setup.py install 
-
 ```
 
 ## SoFIA applications ##
