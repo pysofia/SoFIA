@@ -43,6 +43,12 @@ prior = dist.Uniform(6,hyp)
 
 ##
 
+# Prior denormalization
+def denormalization(Xi,hyp):
+    for i in range(len(hyp)):
+        Xi[i] = prior.lb[i]+(Xi[i]*(prior.ub[i]-prior.lb[i]))
+    return Xi
+
 ## GP models ##
 def rho(V):
     return GP_rho.predict(V)
@@ -68,14 +74,14 @@ def log_likelihood(Xi):
     V = np.zeros(7)
     V[0] += Xi[2] # //Ps
     V[1] += Xi[3] # //Tw
-    V[2] += Xi[4] # //Te
+    V[2] += Xi[5] # //Te
     V[5] += Xi[0] # //Gnit
     V[6] += Xi[1] # //Grec
 
     X = np.zeros(3)
-    X[0] += prior.lb[5]+(Xi[5]*(prior.ub[5]-prior.lb[5]))
+    X[0] += prior.lb[4]+(Xi[4]*(prior.ub[4]-prior.lb[4]))
     X[1] += prior.lb[2]+(Xi[2]*(prior.ub[2]-prior.lb[2]))
-    X[2] += prior.lb[4]+(Xi[4]*(prior.ub[4]-prior.lb[4]))
+    X[2] += prior.lb[5]+(Xi[5]*(prior.ub[5]-prior.lb[5]))
 
     ve, betae = ve_betae(X)
 
