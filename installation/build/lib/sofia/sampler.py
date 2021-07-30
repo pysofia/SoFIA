@@ -125,7 +125,7 @@ class diagnostics:
         n = list(range(1, len(self.chain)+1))
         n_lg = [0.]*(1+nlg)
         for i in range(nlg+1): # nlg+1
-            n_lg[i] = 1 + i #1 + i*nlg
+            n_lg[i] = i #1 + i*nlg
   
         for i in range(nplots):
             a = acf(self.chain[:,d[i]],nlags=nlg)
