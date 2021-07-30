@@ -32,11 +32,11 @@ observations = [polynomial(true_coeffs,x_obs[i]) + np.random.normal(loc=0.,scale
 h = [[-5.,20.]]*len(true_coeffs)
 prior = dist.Uniform(len(true_coeffs),h)
 
-# Prior denormalization
-def denormalization(Xi,hyp):
-    for i in range(len(hyp)):
-        Xi[i] = prior.lb[i]+(Xi[i]*(prior.ub[i]-prior.lb[i]))
-    return Xi
+# Prior denormalization: in case we want to sample normalized quantities. Not used in this example
+# def denormalization(Xi,hyp):
+#     for i in range(len(hyp)):
+#         Xi[i] = prior.lb[i]+(Xi[i]*(prior.ub[i]-prior.lb[i]))
+#     return Xi
 
 ## Likelihood definition
 hyp = [[observations[i],sigma_obs] for i in range(n_obs)]
