@@ -9,6 +9,24 @@
 
 %%%%%%%
 \usepackage{longtable}
+\usepackage[most]{tcolorbox}
+\definecolor{block-gray}{gray}{0.85}
+\newtcolorbox{myquote}{colback=block-gray,boxrule=0pt,boxsep=0pt,breakable}
+% \newtcolorbox{myquote}{colback=block-gray,grow to right by=-10mm,grow to left by=-10mm,
+% boxrule=0pt,boxsep=0pt,breakable}
+\makeatletter
+\def\quoteparse{\@ifnextchar`{\quotex}{\singlequote}}
+\def\quotex#1{\@ifnextchar`{\triplequote\@gobble}{\doublequote}}
+\makeatother
+\def\singlequote#1`{[StartQ]#1[EndQ]\quoteON}
+\def\doublequote#1``{[StartQQ]#1[EndQQ]\quoteON}
+\long\def\triplequote#1```{\begin{myquote}\parskip 1ex#1\end{myquote}\quoteON}
+\def\quoteON{\catcode``=\active}
+\def\quoteOFF{\catcode``=12}
+\quoteON
+\def`{\quoteOFF \quoteparse}
+\quoteOFF
+
 \pagenumbering{gobble}
 
 \title{\large \textbf{SoFIA: So}bol-based sensitivity analysis, \textbf{F}orward and \textbf{I}nverse uncertainty propagation with \textbf{A}pplications to high temperature gases}
@@ -38,13 +56,60 @@ Finally, the purpose of SoFIA is to also grow. If you happen to need to implemen
 
 \section{Structure}
 
-In within the SoFIA library, different modules can be found. This section is structured according to the different modules that can be found in SoFIA.\\
+In within the SoFIA library, different modules are defined. This section is structured according to the different modules that can be found in SoFIA.\\
 
-\noindent\textbf{Sensitivity Analysis.}
+Create mind map or something and linkages to external functions and codes.
 
 \section{Usage}
 
+In this section, we describe the basic imports and object calls to use the different features of the SoFIA library.\\
+
+\noindent\textbf{\small Sensitivity Analysis (\texttt{SA}).} This module can be found in \texttt{SoFIA/SA}. In there, you can find the \texttt{Sobol.py} file with different utilities. We have the \texttt{sampling\_sequence} which generates the matrices with the inputs that need evaluations from our model, and \texttt{indices} which takes on the resulting evaluations and compute the first and total order Sobol' indices. You can print out the matrix with the inputs (each row contains all the inputs for one evaluation of the model) and then generate the evaluations the way you prefer. Then you come back and get your indices. The following code snippet shows an example of usage of this module. In \texttt{[...]} you can include the body of your code, namely, the function you want to perform sensitivity analysis on and any other relevant characteristics.\\
+\quoteON
+```
+\texttt{import sofia.Sobol as sbl}\\
+
+\texttt{[...] \# Definition of the function to be evaluated}\\
+
+\texttt{SA = sbl.Sobol() \# Instantiation of sensitivity analysis object}\\
+
+\texttt{samples = SA.sampling sequence(n\_samples,n\_variables,['dist vars'],None)}\\
+
+\texttt{[...] \# Evaluation of function f on the samples computed}\\
+
+\texttt{SA.indices(f,n\_samples,n\_variables)}
+
+```
+\quoteOFF
+
+The concrete example with the Ishigami function can be found in \texttt{SA/example.py}.\\
+
+\noindent\textbf{\small Probability distributions (\texttt{Probability\_distributions}).} This module can be found in \texttt{SoFIA/Probability\_distributions}. Several utilities are defined in \texttt{distributions.py}. There are two implementations: uniform distribution and Gaussian distribution. Both objects can be used with an arbitrary number of dimensions, although the resulting n-dimensional distributions do not account for correlation among variables. To instantiate a distribution object we prescribe the number of dimensions and the hyperparameters: lower and upper bounds for uniform distributions, and mean and standard deviation for Gaussian distributions. We can then compute PDF values, log-PDF values (useful for inverse problems), CDF values, inverse CDF values (to sample arbitrary distributions based on uniform or Gaussians), and sample from the distribution itself. A code snippet with a usage example is shown hereafter.\\
+
+\quoteON
+```
+\texttt{import sofia.distributions as dist}\\
+
+\texttt{hyp = [[a,b]] \# Hyperparameters for a 1D distribution}\\
+
+\texttt{D = dist.Uniform(n\_dimensions,hyp) or dist.Gaussian(n\_dimensions,hyp) \# Instantiation of probability distribution object: either 1D uniform or Gaussian}\\
+
+\texttt{x = np.linspace(-10.,10.,1000)}\\
+
+\texttt{D.get\_cdf\_values(x,0) \# get CDF values of the distribution for variable in the 0th position of the hyp array}\\
+
+\texttt{D.get\_samples(0,n\_samples) \# Sample the distribution for variable in the 0th position of the hyp array}
+
+```
+\quoteOFF
+
+\noindent\textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} This module is placed in \texttt{SoFIA/Iprop}. Utilities can be found in the script \texttt{sampler.py} where a Markov Chain Monte Carlo sampler based on the Metropolis-Hastings algorithm is built. The sampler can be seeded
+
+\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} Under construction.
+
 \section{Examples}
+
+Results and plots for the particular examples I have in SoFIA
 
 
 \end{document}

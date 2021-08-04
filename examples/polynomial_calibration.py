@@ -8,7 +8,8 @@ import sofia.distributions as dist
 
 ## True model ##
 
-true_coeffs = {'a_0': 10., 'a_1': -2., 'a_2': 7.5, 'a_3': -3.3, 'a_4': -3.2} # a_0 + a_1*x + a_2*x^2 + a_3*x^3 + a_4*x^4
+true_coeffs = {'a_0': 10., 'a_1': -2., 'a_2': 0., 'a_3': 0., 'a_4': 0.} # a_0 + a_1*x + a_2*x^2 + a_3*x^3 + a_4*x^4
+# true_coeffs = {'a_0': 10., 'a_1': -2., 'a_2': 7.5, 'a_3': -3.3, 'a_4': -3.2}
 
 def polynomial (a,x): # a it's a dictionary
     value = 0.
@@ -33,8 +34,8 @@ h = [[-5.,20.]]*len(true_coeffs)
 prior = dist.Uniform(len(true_coeffs),h)
 
 # Prior denormalization: in case we want to sample normalized quantities. Not used in this example
-# def denormalization(Xi,hyp):
-#     for i in range(len(hyp)):
+# def denormalization(Xi,h):
+#     for i in range(len(h)):
 #         Xi[i] = prior.lb[i]+(Xi[i]*(prior.ub[i]-prior.lb[i]))
 #     return Xi
 
@@ -103,6 +104,7 @@ for i in range(len(x)):
 
 plt.scatter(x_obs,observations,label='Observations')
 plt.plot(x,f_mean,label='Mean')
+plt.plot(x,polynomial(true_coeffs,x),color='red',label='True model')
 plt.fill_between(x,f_l,f_u,color='blue',alpha=0.2,label='95% C. I.')
 plt.plot(x,f_l,linestyle='--', color='blue')
 plt.plot(x,f_u,linestyle='--', color='blue')
@@ -126,4 +128,4 @@ var = [0,1,2,3,4] # Position in XMCMC chain
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
 sampler_diag.chain_visual(5,var)
-sampler_diag.autocorr(40,5,var)
+sampler_diag.autocorr(70,5,var)

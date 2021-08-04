@@ -139,5 +139,6 @@ class diagnostics:
         n = list(range(1, len(self.chain)+1))
         for i in range(nplots):
             plt.plot(n,self.chain[:,d[i]],label=self.dict_var[d[i]])
+        plt.xlim(0.,n[-1])
         plt.legend()
         plt.show()
