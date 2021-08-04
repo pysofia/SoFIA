@@ -103,11 +103,41 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 ```
 \quoteOFF
 
-\noindent\textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} This module is placed in \texttt{SoFIA/Iprop}. Utilities can be found in the script \texttt{sampler.py} where a Markov Chain Monte Carlo sampler based on the Metropolis-Hastings algorithm is built. The sampler can be seeded
+\noindent\textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} This module is placed in \texttt{SoFIA/Iprop}. Utilities can be found in the script \texttt{sampler.py} with which a Markov chain based on the Metropolis Hastings algorithm can be built. For the instantiation of the sampler we have to specify an initial covariance function \texttt{covinit}, a loglikelihood function \texttt{fun\_in}, and the number of samples to burn for the adaptation of the covariance matrix \texttt{nburn}. The chain is initiated with the parameters specified in the utility \texttt{seed}, while the \texttt{Burn} routine adapts the covariance matrix with the presribed number of draws \texttt{nburn}. The function \texttt{DoStep} advances the Markov chain and generates the useful samples to be used in the analysis of the posterior distribution. The script \texttt{sampler.py} also includes two diagnostic techniques: the plotting of the trace through the \texttt{chain\_visual} function, and the computation of the autocorrelation function with \texttt{autocorr}. For the chain diagnostics object, we must specify the chain samples and a dictionary that links the position of the variables in the vector of variables used for the chain construction to a variable name for plotting purposes. A code snippet with the typical usage of this module is shown hereafter.\\
 
-\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} Under construction.
+\quoteON
+```
+\texttt{import sofia.sampler as mcmc}\\
+
+\texttt{[...] \# Model to be calibrated and corresponding definition of the loglikelihood function of the experiments}
+
+\texttt{sampler = mcmc.metropolis(np.identity(n\_dim)*0.01, log\_lik, n\_samples) \# Instantiation of the MCMC sampler}\\
+
+\texttt{[...] \# Definition of the initial values of the parameters to be calibrated}\\
+
+\texttt{sampler.seed(initial\_values\_of\_parameters)}\\
+
+\texttt{sampler.Burn()}\\
+
+\texttt{for i in range(n\_samples):}\\
+\texttt{sampler.DoStep(1)}\\
+
+\texttt{sampler\_diag = mcmc.diagnostics(chain,dict\_var) \# Instantiation of the chain diagnostics object}\\
+
+\texttt{sampler\_diag.chain\_visual(n\_plots,var)}\\
+
+\texttt{sampler\_diag.autocorr(n\_lags,n\_plots,var)}
+
+```
+\quoteOFF
+
+\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} Under development. It will include a simple polynomial chaos construction. Sample-based methods can be built with the functionalities already included. \\
+
+\noindent\textbf{\small Applications (\texttt{Applications}).} Under development. It will include scripts with which to reproduce the results obtained in my PhD thesis. These scripts will put together different modules from SoFIA to perform all the computations. The only inputs to be provided will be the external model evaluations and inputs from which to construct Gaussian process surrogates and carry out the inverse and/or forward analyses. The data from the simulations I used in my thesis will also be available in another repository.\\
 
 \section{Examples}
+
+Particular examples of the usage of the different modules depicted in the previous section can be found in \texttt{SoFIA/examples}. Here we describe some of them and show the results for verification purposes.
 
 Results and plots for the particular examples I have in SoFIA
 
