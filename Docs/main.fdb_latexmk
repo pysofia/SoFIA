@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1628088307 "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf" "main" 1628088308
+["pdflatex"] 1628088307 "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf" "main" 1628088316
   "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.aux" 1628088308 408 50ec4790b98ff28a72123f99cf9bf344 ""
   "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" 1628088307 11157 37f96b184fe7ed91d97cdca4bc031eab ""
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -151,8 +151,8 @@
   "main.aux" 1628088308 408 50ec4790b98ff28a72123f99cf9bf344 "pdflatex"
   "main.tex" 1628088307 11157 37f96b184fe7ed91d97cdca4bc031eab ""
   (generated)
+  "main.log"
   "main.pdf"
   "main.aux"
   "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.log"
-  "main.log"
   "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf"

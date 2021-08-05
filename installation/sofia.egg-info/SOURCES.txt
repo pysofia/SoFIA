@@ -6,6 +6,7 @@ sofia/.DS_Store
 sofia/Sobol.py
 sofia/__init__.py
 sofia/distributions.py
+sofia/pc.py
 sofia/sampler.py
 sofia.egg-info/PKG-INFO
 sofia.egg-info/SOURCES.txt

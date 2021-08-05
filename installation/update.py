@@ -19,6 +19,7 @@ dirName = root + '/SoFIA/installation/build/lib/sofia'
 shutil.copy(root + '/SoFIA/Iprop/sampler.py',dirName)
 shutil.copy(root + '/SoFIA/Probability_distributions/distributions.py',dirName)
 shutil.copy(root + '/SoFIA/SA/Sobol.py',dirName)
+shutil.copy(root + '/SoFIA/Fprop/pc.py',dirName)
 
 # ---------------------------------
 # Update SoFIA
