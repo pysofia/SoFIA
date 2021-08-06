@@ -16,16 +16,16 @@ def trapezoid_int(f, a, b, n=100):
     F = [1/2*np.abs(P[i+1]-P[i]) * (f(P[i+1])+f(P[i])) for i in range(0,n)]
     return sum(F)
 
-def unif_icdf(params):
-    a = params[0]
-    b = params[1]
-    return lambda u: u * (b - a) + a
+# def unif_icdf(params):
+#     a = params[0]
+#     b = params[1]
+#     return lambda u: u * (b - a) + a
 
-def expo_icdf(params):
-    return lambda u: -np.log(1-u)
+# def expo_icdf(params):
+#     return lambda u: -np.log(1-u)
 
-def norm_icdf(params):
-    return lambda u: norm.ppf(u, loc=0, scale=1)
+# def norm_icdf(params):
+#     return lambda u: norm.ppf(u, loc=0, scale=1)
 
 def approximate_rv_coeffs(P, h):
     # Initialize lists for output to make syntax more canonical with the math

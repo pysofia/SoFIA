@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.24)  4 AUG 2021 16:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.24)  6 AUG 2021 12:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -580,7 +580,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 82--82
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 82--82
-[]\OT1/cmtt/m/n/12 samples = SA.sampling sequence(n[]samples,n[]variables,['dist
+[]\OT1/cmtt/m/n/12 samples = SA.sampling[]sequence(n[]samples,n[]variables,['dist
  []
 
 
@@ -645,17 +645,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 103--103
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 103--103
-[]\OT1/cmtt/m/n/12 D.get[]cdf[]values(x,0) # get CDF values of the distribution for
- []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 103--103
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 103--103
-[]\OT1/cmtt/m/n/12 D.get[]samples(0,n[]samples) # Sample the distribution for variable
  []
 
 
@@ -729,24 +719,79 @@ Underfull \hbox (badness 10000) in paragraph at lines 134--135
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--137
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
 
  []
 
-[4] (/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.aux) ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+[]\OT1/cmtt/m/n/12 h = target.fun[]icdf() # Definition of the inverse CDF function of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+\OT1/cmtt/m/n/12 k = pce.generate[]rv(ki[]uniform, S) # With k we should recover the
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
+
+ []
+
+[5] (/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.aux) ) 
 Here is how much of TeX's memory you used:
- 19770 strings out of 480608
- 424181 string characters out of 5903629
+ 19789 strings out of 480608
+ 424380 string characters out of 5903629
  695131 words of memory out of 5000000
- 35329 multiletter control sequences out of 15000+600000
- 536511 words of font info for 39 fonts, out of 8000000 for 9000
+ 35341 multiletter control sequences out of 15000+600000
+ 539623 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,6n,103p,1440b,968s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on /Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf (4 pages, 91424 bytes).
+ 64i,6n,103p,1440b,967s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on /Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf (5 pages, 117915 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 95 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  157 words of extra memory for PDF output out of 10000 (max. 10000000)
 

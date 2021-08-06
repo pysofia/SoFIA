@@ -73,7 +73,7 @@ In this section, we describe the basic imports and object calls to use the diffe
 
 \texttt{SA = sbl.Sobol() \# Instantiation of sensitivity analysis object}\\
 
-\texttt{samples = SA.sampling sequence(n\_samples,n\_variables,['dist vars'],None)}\\
+\texttt{samples = SA.sampling\_sequence(n\_samples,n\_variables,['dist vars'],None)}\\
 
 \texttt{[...] \# Evaluation of function f on the samples computed}\\
 
@@ -96,9 +96,9 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 
 \texttt{x = np.linspace(-10.,10.,1000)}\\
 
-\texttt{D.get\_cdf\_values(x,0) \# get CDF values of the distribution for variable in the 0th position of the hyp array}\\
+\texttt{D.get\_cdf\_values(x) \# get CDF values of the distribution}\\
 
-\texttt{D.get\_samples(0,n\_samples) \# Sample the distribution for variable in the 0th position of the hyp array}
+\texttt{D.get\_samples(n\_samples) \# Sample the distribution}
 
 ```
 \quoteOFF
@@ -131,13 +131,48 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 ```
 \quoteOFF
 
-\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} Under development. It will include a simple polynomial chaos construction. Sample-based methods can be built with the functionalities already included. \\
+\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} Under development. For the moment, it includes a simple polynomial chaos construction. Sample-based methods can be built with the functionalities already included in the library. \\
+
+\quoteON
+```
+\texttt{import sofia.pc as pce}\\
+\texttt{import sofia.distributions as dist}\\
+
+\texttt{\# Generate Gaussian samples to use}\\
+
+\texttt{N = n\_samples}\\
+
+\texttt{\# Definition of the distribution used in the PCE construction}\\
+
+\texttt{hyp=[[0.,1.]]}\\
+\texttt{G = dist.Gaussian(1,hyp)}\\
+\texttt{S = G.get\_samples(N)}\\
+
+\texttt{\# Definition of the targetted distribution}\\
+
+\texttt{hypU=[[0.,1.]]}\\
+\texttt{target = dist.Uniform(1,hypU)}\\
+
+\texttt{h = target.fun\_icdf() \# Definition of the inverse CDF function of the target distribution}\\
+
+\texttt{ki\_uniform = pce.approximate\_rv\_coeffs(n\_polynomials, h)}\\
+\texttt{k = pce.generate\_rv(ki\_uniform, S) \# With k we should recover the target distribution}
+
+```
+\quoteOFF
 
 \noindent\textbf{\small Applications (\texttt{Applications}).} Under development. It will include scripts with which to reproduce the results obtained in my PhD thesis. These scripts will put together different modules from SoFIA to perform all the computations. The only inputs to be provided will be the external model evaluations and inputs from which to construct Gaussian process surrogates and carry out the inverse and/or forward analyses. The data from the simulations I used in my thesis will also be available in another repository.\\
 
 \section{Examples}
 
-Particular examples of the usage of the different modules depicted in the previous section can be found in \texttt{SoFIA/examples}. Here we describe some of them and show the results for verification purposes.
+Particular examples of the usage of the different modules depicted in the previous section can be found in \texttt{SoFIA/examples}. Here we describe some of them and show the results for verification purposes.\\
+
+\noindent \textbf{\small Sensitivity Analysis (\texttt{SA}).} Here we work with the Ishigami function
+
+\begin{equation}
+    f(x) = \sin(x) + a \cdot \sin(y)^{2} + b \cdot z^{4}\sin(x),
+\end{equation}
+for which we compute sensitivity indices for $x, y, z$ with respect to the model output $f$. The model parameters $a$ and $b$ are set to the values 7 and 0.1, respectively.
 
 Results and plots for the particular examples I have in SoFIA
 
