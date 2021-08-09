@@ -11,8 +11,9 @@ def func(par):
 sampler = mcmc.metropolis(np.identity(2),func,100000)
 
 par = [1.]*2
+# sampler.SetCovProp([[0.0001,0.],[0.,0.0001]])
 sampler.seed(par)
-sampler.Burn()
+# sampler.Burn()
 
 XMCMC = []
 
@@ -27,13 +28,13 @@ true1 = [np.random.normal(loc=0.,scale=1.) for i in range(nchain)]
 true2 = [np.random.normal(loc=5.,scale=1.) for i in range(nchain)]
 
 sns.kdeplot(XMCMC[:,0],shade=True)
-sns.kdeplot(true1,linestyle = '--')
+sns.kdeplot(true1,linestyle = '--',label='True')
 plt.xlim(-5.,5.)
 plt.legend()
 plt.show()
 
 sns.kdeplot(XMCMC[:,1],shade=True)
-sns.kdeplot(true2,linestyle = '--')
+sns.kdeplot(true2,linestyle = '--',label='True')
 plt.xlim(-2.,10.)
 plt.legend()
 plt.show()
@@ -48,5 +49,5 @@ dict_var={0:'$\\mu_{1}$', 1:'$\\mu_{2}$'} # The way they are positioned in MCMC 
 var = [0,1]
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
-sampler_diag.chain_visual(2,var)
-sampler_diag.autocorr(70,2,var)
+sampler_diag.chain_visual(2,var,5000)
+sampler_diag.autocorr(40,2,var)

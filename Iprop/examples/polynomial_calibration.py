@@ -127,5 +127,5 @@ dict_var={0:'a_0', 1:'a_1', 2:'a_2', 3:'a_3', 4:'a_4'} # The way they are positi
 var = [0,1,2,3,4] # Position in XMCMC chain
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
-sampler_diag.chain_visual(5,var)
-sampler_diag.autocorr(70,5,var)
+sampler_diag.chain_visual(5,var,5000)
+sampler_diag.autocorr(40,5,var)

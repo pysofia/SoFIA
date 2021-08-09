@@ -5,6 +5,8 @@
 %%%% Remove if not good %%%
 
 \usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
 \geometry{a4paper, margin=1.1in, top=0.8in}
 
 %%%%%%%
@@ -29,17 +31,19 @@
 
 \pagenumbering{gobble}
 
-\title{\large \textbf{SoFIA: So}bol-based sensitivity analysis, \textbf{F}orward and \textbf{I}nverse uncertainty propagation with \textbf{A}pplications to high temperature gases}
+\title{\large \textbf{SoFIA: So}bol-based sensitivity analysis, \textbf{F}orward and \textbf{I}nverse uncertainty propagation for \textbf{A}pplication to high temperature gases}
 \date{}
 \sectionfont{\fontsize{12}{15}\selectfont}
 \begin{document}
 \maketitle
 % \thispagestyle{fancy}
-\vspace{-1.8cm}
+\vspace{-2.5cm}
 \begin{center}
+\url{https://github.com/pysofia/SoFIA}\\
+\vspace{0.5cm}
 \textbf{Anabel del Val}\\
 \vspace{0.5cm}
-25/06/2021
+\date{\today} %25/06/2021
 \end{center}
 
 \section{Purpose and philosophy of this library}
@@ -64,6 +68,25 @@ Create mind map or something and linkages to external functions and codes.
 
 In this section, we describe the basic imports and object calls to use the different features of the SoFIA library.\\
 
+\noindent\textbf{\small Probability distributions (\texttt{Probability\_distributions}).} This module can be found in \texttt{SoFIA/Probability\_distributions}. Several utilities are defined in \texttt{distributions}\texttt{.py}. There are two implementations: uniform distribution and Gaussian distribution. Both objects can be used with an arbitrary number of dimensions, although the resulting n-dimensional distributions do not account for correlation among variables. To instantiate a distribution object we prescribe the number of dimensions and the hyperparameters: lower and upper bounds for uniform distributions, and mean and standard deviation for Gaussian distributions. We can then compute PDF values, log-PDF values (useful for inverse problems), CDF values, inverse CDF values (to sample arbitrary distributions based on uniform or Gaussians), and sample from the distribution itself. A code snippet with a usage example is shown hereafter.\\
+
+\quoteON
+```
+\texttt{import sofia.distributions as dist}\\
+
+\texttt{hyp = [[a,b]] \# Hyperparameters for a 1D distribution}\\
+
+\texttt{D = dist.Uniform(n\_dimensions,hyp) or dist.Gaussian(n\_dimensions,hyp) \# Instantiation of probability distribution object: either 1D uniform or Gaussian}\\
+
+\texttt{x = np.linspace(-10.,10.,1000)}\\
+
+\texttt{D.get\_cdf\_values(x) \# get CDF values of the distribution}\\
+
+\texttt{D.get\_samples(n\_samples) \# Sample the distribution}
+
+```
+\quoteOFF
+
 \noindent\textbf{\small Sensitivity Analysis (\texttt{SA}).} This module can be found in \texttt{SoFIA/SA}. In there, you can find the \texttt{Sobol.py} file with different utilities. We have the \texttt{sampling\_sequence} which generates the matrices with the inputs that need evaluations from our model, and \texttt{indices} which takes on the resulting evaluations and compute the first and total order Sobol' indices. You can print out the matrix with the inputs (each row contains all the inputs for one evaluation of the model) and then generate the evaluations the way you prefer. Then you come back and get your indices. The following code snippet shows an example of usage of this module. In \texttt{[...]} you can include the body of your code, namely, the function you want to perform sensitivity analysis on and any other relevant characteristics.\\
 \quoteON
 ```
@@ -83,25 +106,6 @@ In this section, we describe the basic imports and object calls to use the diffe
 \quoteOFF
 
 The concrete example with the Ishigami function can be found in \texttt{SA/example.py}.\\
-
-\noindent\textbf{\small Probability distributions (\texttt{Probability\_distributions}).} This module can be found in \texttt{SoFIA/Probability\_distributions}. Several utilities are defined in \texttt{distributions.py}. There are two implementations: uniform distribution and Gaussian distribution. Both objects can be used with an arbitrary number of dimensions, although the resulting n-dimensional distributions do not account for correlation among variables. To instantiate a distribution object we prescribe the number of dimensions and the hyperparameters: lower and upper bounds for uniform distributions, and mean and standard deviation for Gaussian distributions. We can then compute PDF values, log-PDF values (useful for inverse problems), CDF values, inverse CDF values (to sample arbitrary distributions based on uniform or Gaussians), and sample from the distribution itself. A code snippet with a usage example is shown hereafter.\\
-
-\quoteON
-```
-\texttt{import sofia.distributions as dist}\\
-
-\texttt{hyp = [[a,b]] \# Hyperparameters for a 1D distribution}\\
-
-\texttt{D = dist.Uniform(n\_dimensions,hyp) or dist.Gaussian(n\_dimensions,hyp) \# Instantiation of probability distribution object: either 1D uniform or Gaussian}\\
-
-\texttt{x = np.linspace(-10.,10.,1000)}\\
-
-\texttt{D.get\_cdf\_values(x) \# get CDF values of the distribution}\\
-
-\texttt{D.get\_samples(n\_samples) \# Sample the distribution}
-
-```
-\quoteOFF
 
 \noindent\textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} This module is placed in \texttt{SoFIA/Iprop}. Utilities can be found in the script \texttt{sampler.py} with which a Markov chain based on the Metropolis Hastings algorithm can be built. For the instantiation of the sampler we have to specify an initial covariance function \texttt{covinit}, a loglikelihood function \texttt{fun\_in}, and the number of samples to burn for the adaptation of the covariance matrix \texttt{nburn}. The chain is initiated with the parameters specified in the utility \texttt{seed}, while the \texttt{Burn} routine adapts the covariance matrix with the presribed number of draws \texttt{nburn}. The function \texttt{DoStep} advances the Markov chain and generates the useful samples to be used in the analysis of the posterior distribution. The script \texttt{sampler.py} also includes two diagnostic techniques: the plotting of the trace through the \texttt{chain\_visual} function, and the computation of the autocorrelation function with \texttt{autocorr}. For the chain diagnostics object, we must specify the chain samples and a dictionary that links the position of the variables in the vector of variables used for the chain construction to a variable name for plotting purposes. A code snippet with the typical usage of this module is shown hereafter.\\
 
@@ -167,14 +171,110 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 
 Particular examples of the usage of the different modules depicted in the previous section can be found in \texttt{SoFIA/examples}. Here we describe some of them and show the results for verification purposes.\\
 
-\noindent \textbf{\small Sensitivity Analysis (\texttt{SA}).} Here we work with the Ishigami function
+\noindent \textbf{\small Probability distributions (\texttt{Probability\_distributions}).} In the example \texttt{Probability\_distributions/examples/example.py} we compute 1D and 2D uncorrelated uniform and Gaussian distributions. We first sample a uniform distribution with support $\mathcal{U}[-8,8]$ for which we generate 1000 samples and compute the CDF and PDF.
 
-\begin{equation}
-    f(x) = \sin(x) + a \cdot \sin(y)^{2} + b \cdot z^{4}\sin(x),
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/uniform_pdf.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/uniform_cdf.png} 
+    \end{tabular}}
+    \caption{1D uniform PDF and CDF.}
+    \label{fig:1d_uniform}
+\end{figure}
+
+We do the same for a 1D Gaussian distribution $\mathcal{N}(\mu=-1, \sigma=4)$
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/gaussian_pdf.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/gaussian_cdf.png} 
+    \end{tabular}}
+    \caption{1D Gaussian PDF and CDF.}
+    \label{fig:1d_gaussian}
+\end{figure}
+
+We can also compute marginal CDFs and PDFs for 2D distribution of uncorrelated variables. In this case, the uniform distribution has for hyperparameters $\mathcal{U}[-1,4] \times \mathcal{U}[0,2]$, while the 2D Gaussian is defined $\mathcal{N}(-1,4) \times \mathcal{N}(0,2)$.\\
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/marginal_uniform_pdf.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/marginal_uniform_cdf.png} \cr
+    \includegraphics[width=0.5\textwidth]{./figures/marginal_gaussian_pdf.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/marginal_gaussian_cdf.png}
+    \end{tabular}}
+    \caption{2D uniform and Gaussian marginal PDFs and CDFs.}
+    \label{fig:1d_gaussian}
+\end{figure}
+
+\noindent \textbf{\small Sensitivity Analysis (\texttt{SA}).} In the example \texttt{SA/examples/example.py}, we work with the Ishigami function\\
+
+\begin{equation}\label{eq:ishigami}
+    f(x,y) = \sin(x) + a \cdot \sin(y)^{2} + b \cdot z^{4}\sin(x),
 \end{equation}
-for which we compute sensitivity indices for $x, y, z$ with respect to the model output $f$. The model parameters $a$ and $b$ are set to the values 7 and 0.1, respectively.
+for which we compute sensitivity indices for $x, y, z$ with respect to the model output $f$. The model parameters $a$ and $b$ are set to the values 7 and 0.1, respectively. We assume uniform distributions $\mathcal{U}[-\pi,\pi]$ for $x, y, z$ and base our estimations on 10,000 samples.
 
-Results and plots for the particular examples I have in SoFIA
+\begin{table}[!htb]
+    \centering
+    \caption{Sobol' sensitivity indices for the inputs $x, y, z$ of the Ishigami function~\eqref{eq:ishigami}.} 
+    \label{tab:models}
+      \begin{tabular}{c  c  c}
+        \toprule
+        Variables  & $S_{i}$  & $S_{\mathrm{T}_{i}}$ \\ \midrule
+        $x$ & 0.312 & 0.576\\
+        $y$ & 0.446 & 0.443\\
+        $z$ & 0.009 & 0.246\\
+    
+      \end{tabular}
+    \end{table}
 
+\noindent \textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} There are several examples for this module. The first example \texttt{Iprop/examples/example\_ishigami.py} consists of inferring parameters $a$ and $b$ from noisy observations $f$ of the Ishigami function~\eqref{eq:ishigami}. In this case, the parameters are set to the values $a=8$ and $b=1$ while the noise of the observations is set to $\sigma=0.2$. The results are based on data in 3 different points $(x,y,z)$: $(0,1,2), (0,2,5)$, and $(1,8,5)$. The following figure~\ref{fig:ishigami_inverse} shows the trace for parameter $b$ and the marginal posteriors obtained for a 100,000 steps chain with an initial burn-in stage of 100,000 samples. The overall acceptance rate is 0.34008.
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/ishigami_chain_trace.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/ishigami_marginal_post.png}
+    \end{tabular}}
+    \caption{Left: chain trace for parameter $b$ for 5,000 steps. Right: marginal posterior distributions of parameters $a$ and $b$.}
+    \label{fig:ishigami_inverse}
+\end{figure}
+
+We also show the autocorrelation function in the following figure
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/ishigami_acf.png}
+    \end{tabular}}
+    \caption{Autocorrelation function of the chain for parameter $b$.}
+    \label{fig:ishigami_acf}
+\end{figure}
+
+Another example consists on the sampling of two Gaussian distributions by means of MCMC. We sample the Gaussians $\mathcal{N}(0,1)$ and $\mathcal{N}(5,1)$ whose true analytical PDFs are compared to the MCMC result
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/mcmc_N01.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/mcmc_N51.png}
+    \end{tabular}}
+    \caption{Left: true PDF versus the PDF recovered from the Markov chain samples for the first Gaussian distribution $\mathcal{N}(0,1)$ Right: true PDF versus the PDF recovered from the Markov chain samples for the first Gaussian distribution $\mathcal{N}(5,1)$.}
+    \label{fig:mcmc_gaussian_pdf}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/mcmc_gaussian_chains.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/mcmc_gaussian_acfs.png}
+    \end{tabular}}
+    \caption{Left: chain traces for parameters $\mu_{1}$ and $\mu_{2}$ of the Gaussian distributions we are sampling with a MCMC method for 5,000 steps. Right: autocorrelation functions.}
+    \label{fig:mcmc_gaussian_chain_acf}
+\end{figure}
+
+The last example included in the library consists of the reconstruction of a polynomial of arbotrary degree from noisy observations.
 
 \end{document}

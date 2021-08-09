@@ -1,6 +1,6 @@
 
 ## SoFIA
-**So**bol-based sensitivity analysis, **F**orward and **I**nverse uncertainty propagation with **A**pplication to high temperature gases.
+**So**bol-based sensitivity analysis, **F**orward and **I**nverse uncertainty propagation for **A**pplication to high temperature gases.
 
 ## Installation ##
 

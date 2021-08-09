@@ -34,8 +34,8 @@ XMCMC = np.array(XMCMC)
 
 ## Trace plotting
 
-sns.kdeplot(XMCMC[:,0],label='a')
-sns.kdeplot(XMCMC[:,1],label='b')
+sns.kdeplot(XMCMC[:,0],shade=True,label='a')
+sns.kdeplot(XMCMC[:,1],shade=True,label='b')
 plt.legend()
 plt.show()
 
@@ -46,5 +46,5 @@ dict_var={0:'a',1:'b'} # The way they are positioned in MCMC chain
 var = [1]
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
-sampler_diag.chain_visual(1,var)
-sampler_diag.autocorr(70,1,var)
+sampler_diag.chain_visual(1,var,5000)
+sampler_diag.autocorr(40,1,var)
