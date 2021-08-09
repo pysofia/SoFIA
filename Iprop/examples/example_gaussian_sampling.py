@@ -13,7 +13,7 @@ sampler = mcmc.metropolis(np.identity(2),func,100000)
 par = [1.]*2
 # sampler.SetCovProp([[0.0001,0.],[0.,0.0001]])
 sampler.seed(par)
-# sampler.Burn()
+sampler.Burn()
 
 XMCMC = []
 

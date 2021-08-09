@@ -136,10 +136,32 @@ class diagnostics:
         plt.legend()
         plt.show()
 
+    def autocorr1d(self,nlg):
+        n = list(range(1, len(self.chain)+1))
+        n_lg = [0.]*(1+nlg)
+        for i in range(nlg+1): # nlg+1
+            n_lg[i] = 1+i #1 + i*nlg
+  
+        a = acf(self.chain[:],nlags=nlg)
+        plt.plot(n_lg,a,label=self.dict_var[0])
+        plt.fill_between(n_lg,0.,a,alpha=0.2)
+        plt.xlim(0.,n_lg[-1])
+        plt.ylabel('ACF')
+        plt.legend()
+        plt.show()
+
     def chain_visual(self,nplots,d,nsteps=100):
         n = list(range(1, len(self.chain)+1))
         for i in range(nplots):
             plt.plot(n[0:nsteps],self.chain[0:nsteps,d[i]],label=self.dict_var[d[i]])
+        plt.xlim(0.,n[nsteps-1])
+        plt.xlabel('chain steps')
+        plt.legend()
+        plt.show()
+
+    def chain_visual1d(self,nsteps=100):
+        n = list(range(1, len(self.chain)+1))
+        plt.plot(n[0:nsteps],self.chain[0:nsteps],label=self.dict_var[0])
         plt.xlim(0.,n[nsteps-1])
         plt.xlabel('chain steps')
         plt.legend()
