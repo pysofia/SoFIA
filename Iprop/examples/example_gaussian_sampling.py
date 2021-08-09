@@ -50,4 +50,4 @@ var = [0,1]
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
 sampler_diag.chain_visual(2,var,5000)
-sampler_diag.autocorr(40,2,var)
+sampler_diag.autocorr(70,2,var)

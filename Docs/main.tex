@@ -52,7 +52,7 @@ This library was born out of my PhD studies. The code and tools initially availa
 
 Aerothermodynamicists in general have many other things to worry about in their research. We deal with complicated models and experimental facilities, and it is not often the case that we have the required mathematical background to do UQ. Therefore, looking for general purpose UQ libraries can be quite scary and burdensome. Our models are complex and so is our data. If you know me, you know that my PhD research was oriented towards developing UQ (in particular Bayesian) methodologies for their efficient use in aerothermodynamics models and experimental data. Based on that knowledge, I would assume you have come to SoFIA because whatever is in here will suit you as an aerothermodynamicist without the need to bend over backwards trying to understand those obscure mathematicians in search for a proper library.
 
-I have often found libraries that do uncertainty propagation or Bayesian inference to be very naive. I'll explain myself. They generally use data formats that are only apt to be used with python functions. They assume the model you want to do UQ on is defined on python, which is generally not the case for our community. Working around these issues often require more work than just coding the whole thing yourself. Yes, such libraries have lots of modules and functionalities but it is not so worth to pay the price of having to adapt your model (that very complex code, made by many people's contributions over many years) to suit those libraries needs. That's the philosophy out of which SoFIA is conceived.
+I have often found libraries\footnote{In Python, although it also concerns other popular programming languages.} that do uncertainty propagation or Bayesian inference to be very naive. I'll explain myself. They generally use data formats that are only apt to be used with python functions. They assume the model you want to do UQ on is defined on python, which is generally not the case for our community. Working around these issues often require more work than just coding the whole thing yourself. Yes, such libraries have lots of modules and functionalities but it is not so worth to pay the price of having to adapt your model (that very complex code, made by many people's contributions over many years) to suit those libraries needs. That's the philosophy out of which SoFIA is conceived. It's true, there are other libraries, such as Sandia Labs' \textit{Dakota}\footnote{\url{https://dakota.sandia.gov}}, that are completely non-intrusive and can be a good fit for our needs. This is true, however, SoFIA also retains the possibility of defining your own model in python and using the library's methods without the need to encapsulate your code in an executable to work within \textit{Dakota}, speeding up the analyses in such cases. Further, SoFIA can also grow and adapt to your needs.
 
 SoFIA contains the methods I needed to use during my PhD, nothing more. The methods are implemented in a way that it is very open to suit different models' needs. In general, SoFIA offers a workflow where you can generate samples of input variables that need to be used by the code of your choice. Then you can come back to SoFIA with the evaluations of the model and use other functionalities like computing Sobol indices or fitting a Gaussian Process model. SoFIA does not handle your model for you or ask you to format the model in a specific way. This is great for obtaining full flexibility while enjoying the library's methods.
 
@@ -171,7 +171,7 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 
 Particular examples of the usage of the different modules depicted in the previous section can be found in \texttt{SoFIA/examples}. Here we describe some of them and show the results for verification purposes.\\
 
-\noindent \textbf{\small Probability distributions (\texttt{Probability\_distributions}).} In the example \texttt{Probability\_distributions/examples/example.py} we compute 1D and 2D uncorrelated uniform and Gaussian distributions. We first sample a uniform distribution with support $\mathcal{U}[-8,8]$ for which we generate 1000 samples and compute the CDF and PDF.
+\noindent \textbf{\small Probability distributions (\texttt{Probability\_distributions}).} In the example \texttt{Probability} \texttt{\_distributions}\texttt{/examples/example.py} we compute 1D and 2D uncorrelated uniform and Gaussian distributions. We first sample a uniform distribution with support $\mathcal{U}[-8,8]$ for which we generate 1000 samples and compute the CDF and PDF.
 
 \begin{figure}[!htb]
     \centerline{
@@ -216,7 +216,7 @@ We can also compute marginal CDFs and PDFs for 2D distribution of uncorrelated v
 \end{equation}
 for which we compute sensitivity indices for $x, y, z$ with respect to the model output $f$. The model parameters $a$ and $b$ are set to the values 7 and 0.1, respectively. We assume uniform distributions $\mathcal{U}[-\pi,\pi]$ for $x, y, z$ and base our estimations on 10,000 samples.
 
-\begin{table}[!htb]
+\begin{table}[!hbt]
     \centering
     \caption{Sobol' sensitivity indices for the inputs $x, y, z$ of the Ishigami function~\eqref{eq:ishigami}.} 
     \label{tab:models}
@@ -230,7 +230,9 @@ for which we compute sensitivity indices for $x, y, z$ with respect to the model
       \end{tabular}
     \end{table}
 
-\noindent \textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} There are several examples for this module. The first example \texttt{Iprop/examples/example\_ishigami.py} consists of inferring parameters $a$ and $b$ from noisy observations $f$ of the Ishigami function~\eqref{eq:ishigami}. In this case, the parameters are set to the values $a=8$ and $b=1$ while the noise of the observations is set to $\sigma=0.2$. The results are based on data in 3 different points $(x,y,z)$: $(0,1,2), (0,2,5)$, and $(1,8,5)$. The following figure~\ref{fig:ishigami_inverse} shows the trace for parameter $b$ and the marginal posteriors obtained for a 100,000 steps chain with an initial burn-in stage of 100,000 samples. The overall acceptance rate is 0.34008.
+\noindent \textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} There are several examples for this module. \\
+
+\noindent\textbf{\small Example 1.} The first example \texttt{Iprop/examples/example\_ishigami.py} consists of inferring parameters $a$ and $b$ from noisy observations $f$ of the Ishigami function~\eqref{eq:ishigami}. In this case, the parameters are set to the values $a=8$ and $b=1$ while the noise of the observations is set to $\sigma=0.2$. The results are based on data in 3 different points $(x,y,z)$: $(0,1,2), (0,2,5)$, and $(1,8,5)$. The following figure~\ref{fig:ishigami_inverse} shows the trace for parameter $b$ and the marginal posteriors obtained for a 100,000 steps chain with an initial burn-in stage of 100,000 samples. The overall acceptance rate is 0.34008.
 
 \begin{figure}[!htb]
     \centerline{
@@ -253,7 +255,7 @@ We also show the autocorrelation function in the following figure
     \label{fig:ishigami_acf}
 \end{figure}
 
-Another example consists on the sampling of two Gaussian distributions by means of MCMC. We sample the Gaussians $\mathcal{N}(0,1)$ and $\mathcal{N}(5,1)$ whose true analytical PDFs are compared to the MCMC result
+\noindent\textbf{\small Example 2.} Another example consists on the sampling of two Gaussian distributions by means of MCMC. We sample the Gaussians $\mathcal{N}(0,1)$ and $\mathcal{N}(5,1)$ whose true analytical PDFs are compared to the MCMC result through which the mean parameters $\mu_{1}$ and $\mu_{2}$ of the distributions are estimated. Figs~\ref{fig:mcmc_gaussian_pdf}-\ref{fig:mcmc_gaussian_chain_acf} show the results.
 
 \begin{figure}[!htb]
     \centerline{
@@ -275,6 +277,35 @@ Another example consists on the sampling of two Gaussian distributions by means 
     \label{fig:mcmc_gaussian_chain_acf}
 \end{figure}
 
-The last example included in the library consists of the reconstruction of a polynomial of arbotrary degree from noisy observations.
+\noindent\textbf{\small Example 3.} The last example included in the library consists of the reconstruction of a polynomial of arbitrary degree $k$, $f(x) = \sum_{k=0}^{q} a_{q}x^{q}$ from 30 noisy observations randomly sampled in the canonical range $x \in [0,1]$ with $\sigma=0.1$. We first fit the linear polynomial 
+
+\begin{equation}
+    f(x) = 10 -2 \cdot x
+\end{equation}
+by fixing $a_{0} = 10$, $a_{1} = -2$ and $a_{i} = 0, \ \ \forall i \in {2,...,4}$. The results of the posterior predictive check as well as the marginal posteriors of the parameters are shown in Fig.~\ref{fig:poly_lin}.
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/linear_coeffs.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/linear_polynomial.png}
+    \end{tabular}}
+    \caption{Left: marginal posterior distributions for parameters $a_{0}$ (bias) and $a_{1}$ (slope) for the linear polynomial model. Right: posterior predictive check.}
+    \label{fig:poly_lin}
+\end{figure}
+
+We then fit a more challenging model, $f(x) = 10 - 2 \cdot x + 7.5 \cdot x^{2} - 3.3 \cdot x^{3} - 3.2 \cdot x^{4}$ with the results shown in Fig.~\ref{fig:poly}. Parameter $a_{0}$ has been omitted from the marginal posteriors given the more peaky behavior compared to the rest of the parameters, giving poor viasualization of the results when plotted all together. $a_{0}$ marginal posterior closely resembles that of Fig.~\ref{fig:poly_lin}.\\
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/poly_posteriors_m0.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/poly_predict_check.png}
+    \end{tabular}}
+    \caption{Left: marginal posterior distributions for parameters $a_{1,...,4}$ for the polynomial model. Right: posterior predictive check.}
+    \label{fig:poly}
+\end{figure}
+
+\noindent \textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} In this module, we include a simple polynomial chaos construction. The example included is the polynomial chaos expansion of a uniform distribution based on canonical Gaussian distributions $\mathcal{N}(0,1)$. \\
 
 \end{document}

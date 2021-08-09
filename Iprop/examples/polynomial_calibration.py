@@ -8,7 +8,7 @@ import sofia.distributions as dist
 
 ## True model ##
 
-true_coeffs = {'a_0': 10., 'a_1': -2., 'a_2': 0., 'a_3': 0., 'a_4': 0.} # a_0 + a_1*x + a_2*x^2 + a_3*x^3 + a_4*x^4
+true_coeffs = {'a_0': 5., 'a_1': -2., 'a_2': 7.5, 'a_3': -3.3, 'a_4': -3.2} # a_0 + a_1*x + a_2*x^2 + a_3*x^3 + a_4*x^4
 # true_coeffs = {'a_0': 10., 'a_1': -2., 'a_2': 7.5, 'a_3': -3.3, 'a_4': -3.2}
 
 def polynomial (a,x): # a it's a dictionary
@@ -103,18 +103,18 @@ for i in range(len(x)):
     f_l[i] = np.percentile(f,2.5)
 
 plt.scatter(x_obs,observations,label='Observations')
-plt.plot(x,f_mean,label='Mean')
+plt.plot(x,f_mean,color='green',label='Mean')
 plt.plot(x,polynomial(true_coeffs,x),color='red',label='True model')
-plt.fill_between(x,f_l,f_u,color='blue',alpha=0.2,label='95% C. I.')
-plt.plot(x,f_l,linestyle='--', color='blue')
-plt.plot(x,f_u,linestyle='--', color='blue')
+plt.fill_between(x,f_l,f_u,color='green',alpha=0.2,label='95% C. I.')
+plt.plot(x,f_u,linestyle='--', color='green')
+plt.plot(x,f_l,linestyle='--', color='green')
 plt.xlim(0.,1.)
 plt.legend()
 plt.show()
 
 ## Kernel plotting
 
-for i in range(len(true_coeffs)):
+for i in range(len(true_coeffs)): #len(true_coeffs)
     sns.kdeplot(XMCMC[:,i],label='a_'+str(i),shade=True)
 
 plt.legend()
@@ -128,4 +128,4 @@ var = [0,1,2,3,4] # Position in XMCMC chain
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
 sampler_diag.chain_visual(5,var,5000)
-sampler_diag.autocorr(40,5,var)
+sampler_diag.autocorr(70,5,var)
