@@ -1,8 +1,7 @@
 import numpy as np
 from numpy import random
-import sofia.distributions as distr
 
-class Sobol(distr.Gaussian, distr.Uniform):
+class Sobol:
 
     def sampling_sequence (self, N, d, dist, seed):
 
@@ -17,7 +16,6 @@ class Sobol(distr.Gaussian, distr.Uniform):
         OUTPUTS: Canonical evaluation matrix to be fed to the black box model
 
         """
-
         ## Sampling matrices and seed ##
 
         if seed != None:
@@ -29,9 +27,14 @@ class Sobol(distr.Gaussian, distr.Uniform):
         ## Assigning samples from canonical distributions to random matrices A/B ##
 
         for i in range(d):
+            if dist[i]=='uniform':
                 for j in range(N):
-                    A[j][i] += dist.get_one_sample(pos=i)
-                    B[j][i] += dist.get_one_sample(pos=i)
+                    A[j][i] += np.random.random()
+                    B[j][i] += np.random.random()
+            elif dist[i]=='normal':
+                for j in range(N):
+                    A[j][i] += np.random.randn()
+                    B[j][i] += np.random.randn()
 
         ## Generating the AB matrices ##
 

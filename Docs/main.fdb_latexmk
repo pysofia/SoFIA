@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1628504783 "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf" "main" 1628504790
+["pdflatex"] 1628504783 "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf" "main" 1628504851
   "./figures/gaussian_cdf.png" 1628251837 45327 e8f75e0e5010976969c17f2b22652390 ""
   "./figures/gaussian_pdf.png" 1628251845 51704 30210dbd6d637aceb46f18ba6450253d ""
   "./figures/ishigami_acf.png" 1628256027 38609 43af345e8d507b79ab86cc9ed5cefd34 ""
@@ -227,9 +227,9 @@
   "main.out" 1628504790 200 cb4e44334fcda64922fd735562098191 "pdflatex"
   "main.tex" 1628504782 20499 5e1cd7e60a600c773f810afb2ee80d77 ""
   (generated)
-  "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.log"
-  "main.out"
-  "main.pdf"
   "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf"
-  "main.aux"
   "main.log"
+  "main.out"
+  "main.aux"
+  "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.log"
+  "main.pdf"

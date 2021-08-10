@@ -141,12 +141,10 @@ class Uniform:
 
     # Inverse CDF at x
     def inv_cdf(self,x,pos=0):
-        if x<=0.:
-            return self.lb[pos]
-        elif x>=self.lb[pos] and x<=self.ub[pos]:
+        if x>=0. and x<=1.:
             return (self.ub[pos]-self.lb[pos])*x + self.lb[pos]
         else:
-            return self.ub[pos]
+            print('CDF values only go from 0 to 1!')
 
     # CDF as function
     def fun_cdf(self,pos=0):
