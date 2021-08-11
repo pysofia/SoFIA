@@ -228,7 +228,7 @@ for which we compute sensitivity indices for $x, y, z$ with respect to the model
         $z$ & 0.009 & 0.246\\
     
       \end{tabular}
-    \end{table}
+\end{table}
 
 \noindent \textbf{\small Inverse uncertainty propagation (\texttt{Iprop}).} There are several examples for this module. \\
 
@@ -307,5 +307,36 @@ We then fit a more challenging model, $f(x) = 10 - 2 \cdot x + 7.5 \cdot x^{2} -
 \end{figure}
 
 \noindent \textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} In this module, we include a simple polynomial chaos construction. The example included is the polynomial chaos expansion of a uniform distribution based on canonical Gaussian distributions $\mathcal{N}(0,1)$. \\
+
+\noindent \textbf{\small Applications (\texttt{Applications}).} Adiabatic reactor with Mutation++\\
+
+\noindent \textbf{\small Adiabatic reactor.} In this example, we use the python implementation of the physico-chemical library Mutation++\footnote{https://github.com/mutationpp/Mutationpp} to compute the time evolution of the temperature for an air5 $\{\mathrm{N, NO, O, O_{2}, N_{2}}\}$ adiabatic reactor. The results in terms of the Sobol indices evolution with time is shown in Fig.~\ref{fig:ad_react_SA}. In the legend, the chemical mechanism considered for such mixture is shown.
+
+\begin{figure}[!htb]
+    \centering{
+    \includegraphics[width=0.7\textwidth]{./figures/Sobol_10000.png}
+    \caption{Time evolution of the first order and total order Sobol indices for the temperature evolution of an air5 adiabatic reactor.}}
+    \label{fig:ad_react_SA}
+\end{figure}
+
+For such example, the reaction rates were sampled from log-uniform distributions with the hyperparameters shown in Table~\ref{tab:react_dist}.
+
+\begin{table}[!hbt]
+    \centering
+    \caption{Probability distributions for the pre-exponential factors of the reaction rates of an air5 chemical mechanism.} 
+    \label{tab:react_dist}
+      \begin{tabular}{l  l}
+        \toprule
+        Variables  & distribution \\ \midrule
+        $\log A_{\mathrm{N_{2}+M \rightleftharpoons 2N+M}}$ & $\mathcal{U}[20,22]$ \\
+        $\log A_{\mathrm{O_{2}+M \rightleftharpoons 2O+M}}$ & $\mathcal{U}[20,22]$ \\
+        $\log A_{\mathrm{NO+M \rightleftharpoons N+O+M}}$ & $\mathcal{U}[10,15]$ \\
+        $\log A_{\mathrm{N_{2}+O \rightleftharpoons NO+N}}$ & $\mathcal{U}[10,15]$ \\
+        $\log A_{\mathrm{NO+O \rightleftharpoons O_{2}+N}}$ & $\mathcal{U}[10,15]$
+    
+      \end{tabular}
+\end{table}
+
+
 
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.24)  9 AUG 2021 12:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.24)  11 AUG 2021 12:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1059,37 +1059,51 @@ Underfull \hbox (badness 10000) in paragraph at lines 309--310
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
+
+ []
+
+<./figures/Sobol_10000.png, id=162, 462.528pt x 346.896pt>
+File: ./figures/Sobol_10000.png Graphic file (type png)
+<use ./figures/Sobol_10000.png>
+Package pdftex.def Info: ./figures/Sobol_10000.png  used on input line 317.
+(pdftex.def)             Requested size: 306.95775pt x 230.22772pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.311 \end{document}
-                     [9 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_coeffs.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_polynomial.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_posteriors_m0.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_predict_check.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 311.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 311.
+l.320 \end{figure}
+                   [9 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_coeffs.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_polynomial.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_posteriors_m0.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_predict_check.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.342 \end{document}
+                     [10 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/Sobol_10000.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 342.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 342.
  (/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 311.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 311.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 342.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 342.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: CB4E44334FCDA64922FD735562098191;200.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 311.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 342.
  ) 
 Here is how much of TeX's memory you used:
- 23645 strings out of 480608
- 487306 string characters out of 5903629
- 779165 words of memory out of 5000000
- 39067 multiletter control sequences out of 15000+600000
+ 23656 strings out of 480608
+ 487525 string characters out of 5903629
+ 779324 words of memory out of 5000000
+ 39074 multiletter control sequences out of 15000+600000
  540018 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,12n,103p,1440b,970s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on /Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf (9 pages, 1239426 bytes).
+ 64i,21n,103p,1440b,970s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on /Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf (10 pages, 1333478 bytes).
 PDF statistics:
- 221 PDF objects out of 1000 (max. 8388607)
- 132 compressed objects within 2 object streams
- 20 named destinations out of 1000 (max. 500000)
- 284 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 236 PDF objects out of 1000 (max. 8388607)
+ 143 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
+ 289 words of extra memory for PDF output out of 10000 (max. 10000000)
 

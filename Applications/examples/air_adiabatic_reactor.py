@@ -6,6 +6,7 @@ from cycler import cycler
 import sofia.distributions as dist
 import sofia.Sobol as sbl
 import os, shutil
+import sys
 
 # Time integration
 
@@ -134,7 +135,7 @@ print('Will compute '+str(len(sampls))+' solutions to the RK4 system')
 f = np.zeros((len(sampls),time_steps))
 
 for i in range(len(sampls)):
-    params = [np.power(10,sampls[i][0]),np.power(10,sampls[i][1]),np.power(10,sampls[i][2]),np.power(10,sampls[i][3]),  np.power(10,sampls[i][4])]
+    params = [np.power(10,sampls[i][0]),np.power(10,sampls[i][1]),np.power(10,sampls[i][2]),np.power(10,sampls[i][3]),np.power(10,sampls[i][4])]
     f[i] = solver(params)
     print('Computed solution for sample number '+str(i))
 
