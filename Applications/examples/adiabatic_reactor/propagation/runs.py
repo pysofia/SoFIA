@@ -55,6 +55,9 @@ def solver(params):
     shutil.copy('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park' +'.xml',
     '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml')
 
+    shutil.copy('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5' +'.xml',
+    '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml')
+
     with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml', 'r') as f:
         lines = f.readlines()
 
@@ -70,8 +73,18 @@ def solver(params):
     with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5]) +'.xml', 'w') as f:
         f.writelines(lines)
 
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml', 'r') as g:
+        lines = g.readlines()
+
+    # Replace the lines
+    lines[1] = ('{:s}  \n').format('<mixture mechanism="air5_Park_'+str(params[5])+'">') 
+
+    # Write the lines back
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5]) +'.xml', 'w') as g:
+        g.writelines(lines)
+
     # ## Physico-chemical model settings (mpp)
-    opts = mpp.MixtureOptions("air_5")
+    opts = mpp.MixtureOptions("air_5_"+str(params[5]))
     opts.setThermodynamicDatabase("RRHO")
     opts.setStateModel("ChemNonEq1T")
 
@@ -82,7 +95,7 @@ def solver(params):
     # ##
 
     T = 300
-    P = 10000
+    P = 100000
     mix.equilibrate(T,P)
     rhoi_eq = mix.densities()
 
@@ -120,12 +133,14 @@ def solver(params):
         temp[i] += temperature[i][0]
 
     # Write the lines back
-    with open('/Users/anabel/Documents/PhD/Code/SoFIA/Applications/examples/output/temp_profile_'+str(params[5])+'.dat', 'w') as f:
+    with open('/Users/anabel/Documents/PhD/Code/SoFIA/Applications/examples/adiabatic_reactor/propagation/output/temp_profile_p1atm_'+str(params[5])+'.dat', 'w') as f:
         for i in range(len(temp)):
             f.write(str(temp[i])+' ')
         f.write('\n')
     # return temp
+
     os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml')
+    os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml')
     return
 
 def parallel_cases_with_mpi(cases, run_func, verbose=True):
@@ -185,10 +200,7 @@ for i in range(time_steps):
 hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.]]
 input_distr = dist.Uniform(5,hyp)
 
-SA = sbl.Sobol(5,hyp) # Instantiation of sensitivity analysis object
-
-sampls = SA.sampling_sequence(1000,5,input_distr,None)
-print('Will compute '+str(len(sampls))+' solutions to the RK4 system')
+sampls = [[input_distr.get_one_sample(),input_distr.get_one_sample(pos=1),input_distr.get_one_sample(pos=2),input_distr.get_one_sample(pos=3),input_distr.get_one_sample(pos=4)] for i in range(1000)]
 
 f = np.zeros((len(sampls),time_steps))
 params = [0.]*len(sampls)
@@ -199,40 +211,3 @@ for i in range(len(sampls)):
 
 # Run the cases
 parallel_cases_with_mpi(params, solver)
-
-exit(0)
-
-ind = np.zeros((time_steps,5))
-ind_T = np.zeros((time_steps,5))
-
-ind_all = [[0.]*2]
-
-for i in range(time_steps):
-    func = [[0.]]*len(sampls)
-    for j in range(len(sampls)):
-        func[j] = [f[j,i]]
-
-    ind[i] = SA.indices(func,1000,5)[0]
-    ind_T[i] = SA.indices(func,1000,5)[1]
-    print('Computed index for time step = '+str(i))
-
-labels_T = {0: 'N2+M=2N+M', 1: 'O2+M=2O+M', 2: 'NO+M=N+O+M', 3: 'N2+O=NO+N', 4: 'NO+O=O2+N'}
-
-plt.figure()
-for i in range(5):
-    plt.plot(time,ind_T[:,i],label=labels_T[i])
-
-for i in range(4):
-    plt.plot(time,ind[:,i])
-
-plt.plot(time,ind[:,4],label='First order')
-
-ax = plt.gca()
-ax.yaxis.set_label_coords(0.0, 1.00)
-plt.ylabel('Sobol indices', rotation=0)
-plt.xlabel('time, s')
-ax.spines['right'].set_visible(False)
-ax.spines['top'].set_visible(False) 
-plt.ylim(0.,1.25)
-plt.legend() 
-plt.show()

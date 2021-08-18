@@ -41,13 +41,25 @@ ind_T = np.zeros((time_steps,5))
 
 ind_all = [[0.]*2]
 
+####
+for i in range(time_steps):
+    func = np.zeros((N*(d+2),time_steps))
+
+    # func = [[0.]]*N*(d+2)
+    for j in range(N*(d+2)):
+        func[j] = np.loadtxt('./output/temp_profile_'+str(j)+'.dat')
+    print(func)
+    exit(0)
+####
+
 for i in range(time_steps):
     func = [[0.]]*N*(d+2)
     for j in range(N*(d+2)):
         func[j] = np.loadtxt('./output/temp_profile_'+str(j)+'.dat')
-
-    ind[i] = SA.indices(func,N,5)[0]
-    ind_T[i] = SA.indices(func,N,5)[1]
+    print(func)
+    exit(0)
+    ind[i] = SA.indices(func[:][i],N,5)[0]
+    ind_T[i] = SA.indices(func[:][i],N,5)[1]
     print('Computed index for time step = '+str(i))
 
 labels_T = {0: 'N2+M=2N+M', 1: 'O2+M=2O+M', 2: 'NO+M=N+O+M', 3: 'N2+O=NO+N', 4: 'NO+O=O2+N'}

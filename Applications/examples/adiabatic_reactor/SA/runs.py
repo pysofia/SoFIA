@@ -55,6 +55,9 @@ def solver(params):
     shutil.copy('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park' +'.xml',
     '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml')
 
+    shutil.copy('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5' +'.xml',
+    '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml')
+
     with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml', 'r') as f:
         lines = f.readlines()
 
@@ -70,8 +73,18 @@ def solver(params):
     with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5]) +'.xml', 'w') as f:
         f.writelines(lines)
 
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml', 'r') as g:
+        lines = g.readlines()
+
+    # Replace the lines
+    lines[1] = ('{:s}  \n').format('<mixture mechanism="air5_Park_'+str(params[5])+'">') 
+
+    # Write the lines back
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5]) +'.xml', 'w') as g:
+        g.writelines(lines)
+
     # ## Physico-chemical model settings (mpp)
-    opts = mpp.MixtureOptions("air_5")
+    opts = mpp.MixtureOptions("air_5_"+str(params[5]))
     opts.setThermodynamicDatabase("RRHO")
     opts.setStateModel("ChemNonEq1T")
 
@@ -120,12 +133,13 @@ def solver(params):
         temp[i] += temperature[i][0]
 
     # Write the lines back
-    with open('/Users/anabel/Documents/PhD/Code/SoFIA/Applications/examples/output/temp_profile_'+str(params[5])+'.dat', 'w') as f:
-        for i in range(len(temp)):
-            f.write(str(temp[i])+' ')
-        f.write('\n')
+    # with open('/Users/anabel/Documents/PhD/Code/SoFIA/Applications/examples/adiabatic_reactor/SA/output/temp_profile_'+str(params[5])+'.dat', 'w') as f:
+    #     for i in range(len(temp)):
+    #         f.write(str(temp[i])+' ')
+    #     f.write('\n')
     # return temp
     os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml')
+    os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml')
     return
 
 def parallel_cases_with_mpi(cases, run_func, verbose=True):
