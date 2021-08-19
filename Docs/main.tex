@@ -308,7 +308,7 @@ We then fit a more challenging model, $f(x) = 10 - 2 \cdot x + 7.5 \cdot x^{2} -
 
 \noindent \textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} In this module, we include a simple polynomial chaos construction. The example included is the polynomial chaos expansion of a uniform distribution based on canonical Gaussian distributions $\mathcal{N}(0,1)$. \\
 
-\noindent \textbf{\small Applications (\texttt{Applications}).} Adiabatic reactor with Mutation++\\
+\noindent \textbf{\small Applications (\texttt{Applications}).} We include different examples of applications. First, we introduce a test case with an adiabatic reactor of a simple mixture. Examples on the particular applications of my thesis will be also included here.\\
 
 \noindent \textbf{\small Adiabatic reactor.} In this example, we use the python implementation of the physico-chemical library Mutation++\footnote{\url{https://github.com/mutationpp/Mutationpp}} to compute the time evolution of the temperature for an air5 $\{\mathrm{N, NO, O, O_{2}, N_{2}}\}$ adiabatic reactor. The results in terms of the Sobol indices evolution with time is shown in Fig.~\ref{fig:ad_react_SA}. In the legend, the chemical mechanism considered for such mixture is shown.
 
@@ -337,6 +337,52 @@ For such example, the reaction rates were sampled from log-uniform distributions
       \end{tabular}
 \end{table}
 
+A forward propagation of the a priori uncertainty imposed on the reaction rates of the adiabatic reactor was also carried out (Fig.~\ref{fig:ad_react_Fprop}). Notice that the initial temperature was considered certain in all cases. The contributions to the overall uncertainty shown in Fig.~\ref{fig:ad_react_Fprop} are mainly due to the reactions with the highest Sobol indices shown in Fig.~\ref{fig:ad_react_SA}.
+
+\begin{figure}[!htb]
+    \centering{
+    \includegraphics[width=0.7\textwidth]{./figures/temp_adi_reactor_p100.png}
+    \caption{Time evolution of the mean and 95\% confidence interval of the temperature of an air5 adiabatic reactor at 100 hPa when reaction rates are considered uncertain following Table~\ref{tab:react_dist} distributions.}}
+    \label{fig:ad_react_Fprop}
+\end{figure}
+
+If experimental data are available, the uncertainty estimate can be refined and attain objectivity. The following Fig.~\ref{fig:ad_react_Iprop} shows two different cases. The left plot shows the predictive performance of the calibrated model based on one data point, while the plot on the right uses 5 data points randomly distributed in time. The calibration is performed with 10,000 burned samples and a further 10,000 chain samples. The noise of the observation is $\sigma = 100 \ K$.
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/Iprop_ad_react_1obs.png} &
+    \includegraphics[width=0.5\textwidth]{./figures/Iprop_ad_react_10000.png}
+    \end{tabular}}
+    \caption{Left: posterior predictive check of the calibrated model with 1 observation. Right: posterior predictive check of the calibrated model with 5 observations.}
+    \label{fig:ad_react_Iprop}
+\end{figure}
+
+Further, we also include the computed marginal posterior distributions of the pre-exponential factors in Fig.~\ref{fig:ad_react_Iprop_marginals}. Notice that for the case with 5 observations, the best learned parameter is the one attached to the reaction with the largest the Sobol indices, which dominates the temperature estimation in all the time span. The other coefficients can be known to a lesser degree, some still covering the whole prior range. The plots are given in logarithmic range.\\
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/marginals_1obs.png} &
+    \includegraphics[width=0.53\textwidth]{./figures/posteriors.png}
+    \end{tabular}}
+    \caption{Left: resulting marginal posterior distributions of the calibrated pre-exponential factors with 1 observation. Right: resulting marginal posterior distributions of the calibrated pre-exponential factors with 5 observations.}
+    \label{fig:ad_react_Iprop_marginals}
+\end{figure}
+
+It is also interesting to see that for an adiabatic reactor with a perfectly known initial temperature and a measurement of the temperature at steady-state, NO dissociation is quite well defined, given that it governs the temperature evolution at later times, unlike oxygen dissociation. Fig.~\ref{fig:ad_react_Iprop_marginals_steady} shows the posterior predictive and the resulting marginal distributions.
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/Iprop_steady_point.png} &
+    \includegraphics[width=0.53\textwidth]{./figures/marginals_steady_point.png}
+    \end{tabular}}
+    \caption{Left: posterior predictive check of the calibrated model with 1 observation at steady-state. Right: resulting marginal posterior distributions of the calibrated pre-exponential factors.}
+    \label{fig:ad_react_Iprop_marginals_steady}
+\end{figure}
+
+\noindent \textbf{Nitrogen ablation.}
 
 
 \end{document}

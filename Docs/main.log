@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.24)  11 AUG 2021 13:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.24)  19 AUG 2021 16:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1064,46 +1064,97 @@ Underfull \hbox (badness 10000) in paragraph at lines 311--312
 
  []
 
-<./figures/Sobol_10000.png, id=163, 462.528pt x 346.896pt>
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.314 
+       [9 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_coeffs.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_polynomial.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_posteriors_m0.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_predict_check.png>]
+<./figures/Sobol_10000.png, id=172, 462.528pt x 346.896pt>
 File: ./figures/Sobol_10000.png Graphic file (type png)
 <use ./figures/Sobol_10000.png>
 Package pdftex.def Info: ./figures/Sobol_10000.png  used on input line 317.
 (pdftex.def)             Requested size: 306.95775pt x 230.22772pt.
+<./figures/temp_adi_reactor_p100.png, id=177, 462.528pt x 346.896pt>
+File: ./figures/temp_adi_reactor_p100.png Graphic file (type png)
+<use ./figures/temp_adi_reactor_p100.png>
+Package pdftex.def Info: ./figures/temp_adi_reactor_p100.png  used on input line 344.
+(pdftex.def)             Requested size: 306.95775pt x 230.22772pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.320 \end{figure}
-                   [9 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_coeffs.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/linear_polynomial.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_posteriors_m0.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/poly_predict_check.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+l.350 
+       [10 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/Sobol_10000.png>]
+<./figures/Iprop_ad_react_1obs.png, id=190, 462.528pt x 346.896pt>
+File: ./figures/Iprop_ad_react_1obs.png Graphic file (type png)
+<use ./figures/Iprop_ad_react_1obs.png>
+Package pdftex.def Info: ./figures/Iprop_ad_react_1obs.png  used on input line 356.
+(pdftex.def)             Requested size: 219.2565pt x 164.44383pt.
+<./figures/Iprop_ad_react_10000.png, id=191, 462.528pt x 346.896pt>
+File: ./figures/Iprop_ad_react_10000.png Graphic file (type png)
+<use ./figures/Iprop_ad_react_10000.png>
+Package pdftex.def Info: ./figures/Iprop_ad_react_10000.png  used on input line 356.
+(pdftex.def)             Requested size: 219.2565pt x 164.44383pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 361--362
+
+ []
+
+<./figures/marginals_1obs.png, id=193, 462.528pt x 346.896pt>
+File: ./figures/marginals_1obs.png Graphic file (type png)
+<use ./figures/marginals_1obs.png>
+Package pdftex.def Info: ./figures/marginals_1obs.png  used on input line 368.
+(pdftex.def)             Requested size: 219.2565pt x 164.44383pt.
+<./figures/posteriors.png, id=194, 648.9846pt x 458.1918pt>
+File: ./figures/posteriors.png Graphic file (type png)
+<use ./figures/posteriors.png>
+Package pdftex.def Info: ./figures/posteriors.png  used on input line 368.
+(pdftex.def)             Requested size: 232.41135pt x 164.08897pt.
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.342 \end{document}
-                     [10 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/Sobol_10000.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 342.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 342.
+l.374 
+       [11 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/temp_adi_reactor_p100.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/Iprop_ad_react_1obs.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/Iprop_ad_react_10000.png>]
+<./figures/Iprop_steady_point.png, id=203, 462.528pt x 346.896pt>
+File: ./figures/Iprop_steady_point.png Graphic file (type png)
+<use ./figures/Iprop_steady_point.png>
+Package pdftex.def Info: ./figures/Iprop_steady_point.png  used on input line 380.
+(pdftex.def)             Requested size: 219.2565pt x 164.44383pt.
+<./figures/marginals_steady_point.png, id=204, 462.528pt x 346.896pt>
+File: ./figures/marginals_steady_point.png Graphic file (type png)
+<use ./figures/marginals_steady_point.png>
+Package pdftex.def Info: ./figures/marginals_steady_point.png  used on input line 380.
+(pdftex.def)             Requested size: 232.41135pt x 174.31035pt.
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.388 \end{document}
+                     [12 </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/marginals_1obs.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/posteriors.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/Iprop_steady_point.png> </Users/anabel/Documents/PhD/Code/SoFIA/Docs/./figures/marginals_steady_point.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 388.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 388.
  (/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 342.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 342.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 388.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 388.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: CB4E44334FCDA64922FD735562098191;200.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 342.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 388.
  ) 
 Here is how much of TeX's memory you used:
- 23656 strings out of 480608
- 487525 string characters out of 5903629
- 779324 words of memory out of 5000000
- 39074 multiletter control sequences out of 15000+600000
+ 23706 strings out of 480608
+ 489063 string characters out of 5903629
+ 779983 words of memory out of 5000000
+ 39113 multiletter control sequences out of 15000+600000
  540018 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,21n,103p,1440b,970s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on /Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf (10 pages, 1334037 bytes).
+Output written on /Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf (12 pages, 1820820 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 144 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
- 289 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 270 PDF objects out of 1000 (max. 8388607)
+ 160 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
+ 324 words of extra memory for PDF output out of 10000 (max. 10000000)
 
