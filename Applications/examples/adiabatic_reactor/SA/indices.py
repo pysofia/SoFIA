@@ -22,13 +22,13 @@ plt.rc('font', family='Helvetica')
 
 ##
 
-N=1000
-d=5
+N=10000
+d=6
 ## Input distributions ##
-hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.]]
-input_distr = dist.Uniform(5,hyp)
+hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.],[10000.,15000.]]
+input_distr = dist.Uniform(6,hyp)
 
-SA = sbl.Sobol(5,hyp) # Instantiation of sensitivity analysis object
+SA = sbl.Sobol(6,hyp) # Instantiation of sensitivity analysis object
 
 time_steps = 1002
 time = [0]*time_steps
@@ -36,33 +36,27 @@ time_final = 1.e-7
 for i in range(time_steps):
     time[i] += (i+1)*np.divide(time_final,time_steps)
 
-ind = np.zeros((time_steps,5))
-ind_T = np.zeros((time_steps,5))
+ind = np.zeros((time_steps,6))
+ind_T = np.zeros((time_steps,6))
 
 ind_all = [[0.]*2]
 
-####
-for i in range(time_steps):
-    func = np.zeros((N*(d+2),time_steps))
+func = np.zeros((N*(d+2),time_steps))
 
-    # func = [[0.]]*N*(d+2)
-    for j in range(N*(d+2)):
-        func[j] = np.loadtxt('./output/temp_profile_'+str(j)+'.dat')
-    print(func)
-    exit(0)
-####
+for j in range(N*(d+2)):
+    func[j] = np.loadtxt('./output/temp_profile_Tinit_'+str(j)+'.dat')
 
 for i in range(time_steps):
-    func = [[0.]]*N*(d+2)
+    f = [[0.]]*N*(d+2)
     for j in range(N*(d+2)):
-        func[j] = np.loadtxt('./output/temp_profile_'+str(j)+'.dat')
-    print(func)
-    exit(0)
-    ind[i] = SA.indices(func[:][i],N,5)[0]
-    ind_T[i] = SA.indices(func[:][i],N,5)[1]
+        f[j] = [func[j,i]]
+
+    s = SA.indices(f,N,6)
+    ind[i] = s[0]
+    ind_T[i] = s[1]
     print('Computed index for time step = '+str(i))
 
-labels_T = {0: 'N2+M=2N+M', 1: 'O2+M=2O+M', 2: 'NO+M=N+O+M', 3: 'N2+O=NO+N', 4: 'NO+O=O2+N'}
+labels_T = {0: 'N2+M=2N+M', 1: 'O2+M=2O+M', 2: 'NO+M=N+O+M', 3: 'N2+O=NO+N', 4: 'NO+O=O2+N',5: '$T_{\mathrm{initial}}$'}
 
 plt.figure()
 for i in range(5):
@@ -72,6 +66,9 @@ for i in range(4):
     plt.plot(time,ind[:,i])
 
 plt.plot(time,ind[:,4],label='First order')
+
+plt.plot(time,ind_T[:,5],label=labels_T[5])
+plt.plot(time,ind[:,5],label=labels_T[5] + ' first order')
 
 ax = plt.gca()
 ax.yaxis.set_label_coords(0.0, 1.00)

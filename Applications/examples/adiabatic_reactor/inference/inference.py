@@ -56,11 +56,11 @@ def solver(params):
         lines = f.readlines()
 
     # Replace the lines
-    lines[12] = ('{:s}  \n').format('<arrhenius A="'+str(params[0])+'" n="-1.6" T="113200.0" />')  
-    lines[18] = ('{:s}  \n').format('<arrhenius A="'+str(params[1])+'" n="-1.5" T="59360.0" />')  
-    lines[24] = ('{:s}  \n').format('<arrhenius A="'+str(params[2])+'" n="0.0" T="75500.0" />')  
-    lines[30] = ('{:s}  \n').format('<arrhenius A="'+str(params[3])+'" n="0.42" T="42938.0" />')  
-    lines[35] = ('{:s}  \n').format('<arrhenius A="'+str(params[4])+'" n="0.0" T="19400.0" />')  
+    lines[12] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[0]))+'" n="-1.6" T="113200.0" />')  
+    lines[18] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[1]))+'" n="-1.5" T="59360.0" />')  
+    lines[24] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[2]))+'" n="0.0" T="75500.0" />')  
+    lines[30] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[3]))+'" n="0.42" T="42938.0" />')  
+    lines[35] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[4]))+'" n="0.0" T="19400.0" />')  
     
 
     # Write the lines back
@@ -83,7 +83,7 @@ def solver(params):
     mix.equilibrate(T,P)
     rhoi_eq = mix.densities()
 
-    Tinit = 15000
+    Tinit = params[5]*1000. #15000
     mix.setState(rhoi_eq,Tinit,1)
     total_energy = mix.mixtureEnergyMass()*mix.density()
 
@@ -125,19 +125,19 @@ for i in range(time_steps):
     time[i] += (i+1)*np.divide(time_final,time_steps)
 
 ## Prior distributions ##
-hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.]]
-prior = dist.Uniform(5,hyp)
+hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.],[10.,15.]]
+prior = dist.Uniform(6,hyp)
 
 ## Data consist of different temperature readings at different time steps ##
 
 sigma = 100.
 n_obs=1
-true_params = [np.power(10,prior.get_one_sample()),np.power(10,prior.get_one_sample(pos=1)),np.power(10,prior.get_one_sample(pos=2)),np.power(10,prior.get_one_sample(pos=3)),np.power(10,prior.get_one_sample(pos=4))]
-print(np.log10(true_params))
+true_params = [prior.get_one_sample(),prior.get_one_sample(pos=1),prior.get_one_sample(pos=2),prior.get_one_sample(pos=3),prior.get_one_sample(pos=4),prior.get_one_sample(pos=5)]
+print(true_params)
 
 output = solver(true_params)
 
-t_obs = [np.random.randint(0,1003) for i in range(n_obs)]
+t_obs = [1001] #[np.random.randint(0,1003) for i in range(n_obs)]
 time_obs = [time[t_obs[i]] for i in range(n_obs)]
 
 data = [output[t_obs[i]]+np.random.normal(loc=0,scale=sigma) for i in range(n_obs)] # Five random points in time to perform noisy measurement
@@ -155,7 +155,7 @@ def log_likelihood(Xi):
         elif Xi[i]>prior.ub[i]:
             return -1.e16
 
-    s = solver(np.power(10,Xi))
+    s = solver(Xi)
 
     value = 0.
     for i in range(n_obs):
@@ -168,26 +168,26 @@ def mlog_likelihood(Xi):
     return -1.*log_likelihood(Xi)
 
 ## Looking for the MAP point to start sampling ##
-par = [21.,21.,11.,11.,11.]
+par = [21.,21.,11.,11.,11.,12.]
 res = scipy.optimize.minimize(mlog_likelihood,par,method='Nelder-Mead',tol=1e-6)
 print("MAP found at: "+str(res.x))
 
 # MCMC sampling
-sampler = mcmc.metropolis(np.identity(5)*0.01,log_likelihood,1000)
+sampler = mcmc.metropolis(np.identity(6)*0.01,log_likelihood,10000)
 
 sampler.seed(res.x)
 sampler.Burn()
 
 XMCMC = []
 
-nchain = 1000
+nchain = 10000
 for i in range(nchain):
     XMCMC.append(sampler.DoStep(1))
     print('Step: '+ str(i))
 
 XMCMC = np.array(XMCMC)
 
-## Plotting noisy observations and calibrated polynomial model ##
+## Plotting noisy observations and calibrated model ##
 
 f_mean = [0.]*time_steps
 f_u = [0.]*time_steps
@@ -196,7 +196,7 @@ f_l = [0.]*time_steps
 sol = np.zeros((nchain,time_steps))
 
 for i in range(nchain):
-    sol[i] = solver(np.power(10,XMCMC[i]))
+    sol[i] = solver(XMCMC[i])
 
 for j in range(time_steps):
     f_mean[j] = np.mean(sol[:,j])
@@ -221,7 +221,7 @@ plt.show()
 
 ## Kernel plotting
 
-dict_var = {0: 'N2+M=2N+M',1:'O2+M=2O+M',2:'NO+M=N+O+M',3:'N2+O=NO+N',4:'NO+O=O2+N'} # The way they are positioned in MCMC chain
+dict_var = {0: 'N2+M=2N+M',1:'O2+M=2O+M',2:'NO+M=N+O+M',3:'N2+O=NO+N',4:'NO+O=O2+N',5:'$T_{\mathrm{initial}}$'} # The way they are positioned in MCMC chain
 
 for i in range(5):
     sns.kdeplot(XMCMC[:,i],label=dict_var[i],shade=True)
@@ -229,10 +229,15 @@ for i in range(5):
 plt.legend()
 plt.show()
 
+sns.kdeplot(XMCMC[:,5],label=dict_var[5],shade=True)
+
+plt.legend()
+plt.show()
+
 ## Chain diagnostics
 
-var = [0,1,2,3,4] # Position in XMCMC chain
+var = [0,1,2,3,4,5] # Position in XMCMC chain
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
-sampler_diag.chain_visual(5,var,1000) # 5 plots, show 5000 samples
-sampler_diag.autocorr(70,5,var) # 70 lags
+sampler_diag.chain_visual(6,var,5000) # 5 plots, show 5000 samples
+sampler_diag.autocorr(100,6,var) # 70 lags

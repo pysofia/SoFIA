@@ -382,6 +382,27 @@ It is also interesting to see that for an adiabatic reactor with a perfectly kno
     \label{fig:ad_react_Iprop_marginals_steady}
 \end{figure}
 
+All of the above results assume perfect knowledge of the initial temperature. If we know consider the initial temperature to be unknown within some wide bounds $T_{\mathrm{init}} \sim \mathcal{U}[10000,15000]$, the latest results of Fig.~\ref{fig:ad_react_Iprop_marginals_steady} would now be the ones in Fig.~\ref{fig:ad_react_Iprop_marginals_steady_Tinit}. Notice the change in the calibrated model as well as the marginal distributions. 
+
+\begin{figure}[!htb]
+    \centerline{
+    \begin{tabular}{c c}
+    \includegraphics[width=0.5\textwidth]{./figures/Iprop_post_check_10000_steady_Tinit.png} &
+    \includegraphics[width=0.53\textwidth]{./figures/marginals_10000_Tinit.png}
+    \end{tabular}}
+    \caption{Left: posterior predictive check of the calibrated model with 1 observation at steady-state. Right: resulting marginal posterior distributions of the calibrated pre-exponential factors.}
+    \label{fig:ad_react_Iprop_marginals_steady_Tinit}
+\end{figure}
+
+If we were to run a sensitivity analysis again, this time with the initial temperature as a free parameter, we would see the following result of Fig.~\ref{fig:ad_react_SA_Tinit2}. In it, we can appreciate how the sensitivity indices change values once the initial temperature is considered unknown. The marginal posterior distributions changes can be understood based on the sensitivity of the problem when adding the initial temperature as an additional free parameter.\\
+
+\begin{figure}[!htb]
+    \centering{
+    \includegraphics[width=0.7\textwidth]{./figures/Sobol_Tinit.png}
+    \caption{Time evolution of the first order and total order Sobol indices for the variance-based sensitivity of the temperature evolution of an air5 adiabatic reactor at 100 hPa with respect to the pre-exponential factors of the reaction rates of the chemical mechanism and the initial temperature.}}
+    \label{fig:ad_react_SA_Tinit2}
+\end{figure}
+
 \noindent \textbf{Nitrogen ablation.}
 
 

@@ -53,38 +53,38 @@ def solver(params):
     # Write gsi.xml in mixture.xml files
 
     shutil.copy('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park' +'.xml',
-    '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml')
+    '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[6])+'.xml')
 
     shutil.copy('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5' +'.xml',
-    '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml')
+    '/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[6])+'.xml')
 
-    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml', 'r') as f:
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[6])+'.xml', 'r') as f:
         lines = f.readlines()
 
     # Replace the lines
-    lines[12] = ('{:s}  \n').format('<arrhenius A="'+str(params[0])+'" n="-1.6" T="113200.0" />')  
-    lines[18] = ('{:s}  \n').format('<arrhenius A="'+str(params[1])+'" n="-1.5" T="59360.0" />')  
-    lines[24] = ('{:s}  \n').format('<arrhenius A="'+str(params[2])+'" n="0.0" T="75500.0" />')  
-    lines[30] = ('{:s}  \n').format('<arrhenius A="'+str(params[3])+'" n="0.42" T="42938.0" />')  
-    lines[35] = ('{:s}  \n').format('<arrhenius A="'+str(params[4])+'" n="0.0" T="19400.0" />')  
+    lines[12] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[0]))+'" n="-1.6" T="113200.0" />')  
+    lines[18] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[1]))+'" n="-1.5" T="59360.0" />')  
+    lines[24] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[2]))+'" n="0.0" T="75500.0" />')  
+    lines[30] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[3]))+'" n="0.42" T="42938.0" />')  
+    lines[35] = ('{:s}  \n').format('<arrhenius A="'+str(np.power(10,params[4]))+'" n="0.0" T="19400.0" />')  
     
 
     # Write the lines back
-    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5]) +'.xml', 'w') as f:
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[6]) +'.xml', 'w') as f:
         f.writelines(lines)
 
-    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml', 'r') as g:
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[6])+'.xml', 'r') as g:
         lines = g.readlines()
 
     # Replace the lines
-    lines[1] = ('{:s}  \n').format('<mixture mechanism="air5_Park_'+str(params[5])+'">') 
+    lines[1] = ('{:s}  \n').format('<mixture mechanism="air5_Park_'+str(params[6])+'">') 
 
     # Write the lines back
-    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5]) +'.xml', 'w') as g:
+    with open('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[6]) +'.xml', 'w') as g:
         g.writelines(lines)
 
     # ## Physico-chemical model settings (mpp)
-    opts = mpp.MixtureOptions("air_5_"+str(params[5]))
+    opts = mpp.MixtureOptions("air_5_"+str(params[6]))
     opts.setThermodynamicDatabase("RRHO")
     opts.setStateModel("ChemNonEq1T")
 
@@ -99,7 +99,7 @@ def solver(params):
     mix.equilibrate(T,P)
     rhoi_eq = mix.densities()
 
-    Tinit = 15000
+    Tinit = params[5] #15000
     mix.setState(rhoi_eq,Tinit,1)
     total_energy = mix.mixtureEnergyMass()*mix.density()
 
@@ -133,13 +133,15 @@ def solver(params):
         temp[i] += temperature[i][0]
 
     # Write the lines back
-    # with open('/Users/anabel/Documents/PhD/Code/SoFIA/Applications/examples/adiabatic_reactor/SA/output/temp_profile_'+str(params[5])+'.dat', 'w') as f:
-    #     for i in range(len(temp)):
-    #         f.write(str(temp[i])+' ')
-    #     f.write('\n')
+    with open('/Users/anabel/Documents/PhD/Code/SoFIA/Applications/examples/adiabatic_reactor/SA/output/temp_profile_Tinit_'+str(params[6])+'.dat', 'w') as f:
+        for i in range(len(temp)):
+            f.write(str(temp[i])+' ')
+        f.write('\n')
     # return temp
-    os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[5])+'.xml')
-    os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[5])+'.xml')
+
+    os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mechanisms/air5_Park_'+str(params[6])+'.xml')
+    os.remove('/Users/anabel/Documents/PhD/Code/Mutationpp_Michele/Mutationpp/data/mixtures/air_5_'+str(params[6])+'.xml')
+
     return
 
 def parallel_cases_with_mpi(cases, run_func, verbose=True):
@@ -196,57 +198,20 @@ for i in range(time_steps):
     time[i] += (i+1)*np.divide(time_final,time_steps)
 
 ## Input distributions ##
-hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.]]
-input_distr = dist.Uniform(5,hyp)
+hyp = [[20.,22.],[20.,22.],[10.,15.],[10.,15.],[10.,15.],[10000.,15000.]]
+input_distr = dist.Uniform(6,hyp)
 
-SA = sbl.Sobol(5,hyp) # Instantiation of sensitivity analysis object
+SA = sbl.Sobol(6,hyp) # Instantiation of sensitivity analysis object
 
-sampls = SA.sampling_sequence(1000,5,input_distr,None)
+sampls = SA.sampling_sequence(10000,6,input_distr,None)
 print('Will compute '+str(len(sampls))+' solutions to the RK4 system')
 
 f = np.zeros((len(sampls),time_steps))
 params = [0.]*len(sampls)
 
 for i in range(len(sampls)):
-    params[i] = [np.power(10,sampls[i][j]) for j in range(5)]
+    params[i] = [sampls[i][j] for j in range(6)]
     params[i].append(i)
 
 # Run the cases
 parallel_cases_with_mpi(params, solver)
-
-exit(0)
-
-ind = np.zeros((time_steps,5))
-ind_T = np.zeros((time_steps,5))
-
-ind_all = [[0.]*2]
-
-for i in range(time_steps):
-    func = [[0.]]*len(sampls)
-    for j in range(len(sampls)):
-        func[j] = [f[j,i]]
-
-    ind[i] = SA.indices(func,1000,5)[0]
-    ind_T[i] = SA.indices(func,1000,5)[1]
-    print('Computed index for time step = '+str(i))
-
-labels_T = {0: 'N2+M=2N+M', 1: 'O2+M=2O+M', 2: 'NO+M=N+O+M', 3: 'N2+O=NO+N', 4: 'NO+O=O2+N'}
-
-plt.figure()
-for i in range(5):
-    plt.plot(time,ind_T[:,i],label=labels_T[i])
-
-for i in range(4):
-    plt.plot(time,ind[:,i])
-
-plt.plot(time,ind[:,4],label='First order')
-
-ax = plt.gca()
-ax.yaxis.set_label_coords(0.0, 1.00)
-plt.ylabel('Sobol indices', rotation=0)
-plt.xlabel('time, s')
-ax.spines['right'].set_visible(False)
-ax.spines['top'].set_visible(False) 
-plt.ylim(0.,1.25)
-plt.legend() 
-plt.show()
