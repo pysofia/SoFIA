@@ -91,6 +91,10 @@ def log_likelihood(Xi):
     V = [V]
 
     value = 0.
+    for i in range(n_obs):
+        value += Lik.get_one_prop_logpdf_value(s[t_obs[i]],i)
+
+    value = 0.
     for i,j in zip(range(3),range(3)):
         value += np.log(Lik.get_one_pdf_value(prior.lb[j+2]+(Xi[j+2]*(prior.ub[j+2]-prior.lb[j+2])),i)+1.e-16)
 

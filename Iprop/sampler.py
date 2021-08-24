@@ -2,6 +2,8 @@ import numpy as np
 from numpy import random
 from statsmodels.tsa.stattools import acf
 import matplotlib.pyplot as plt
+import sofia.distributions as dist
+import numdifftools as nd
 
 class metropolis:
 
@@ -166,3 +168,71 @@ class diagnostics:
         plt.xlabel('chain steps')
         plt.legend()
         plt.show()
+
+class hamiltonian(dist.Gaussian):
+
+    """
+
+        This class creates a Hamiltonian Monte Carlo sampler (MCMC chain) with the identity matrix as the momentum distribution's covariance matrix.
+
+        INPUTS: The posterior (log-posterior, proportional), dimensions (default 1), path length for the leapfrog integration (default 1), and step size along the path length for each leapfrog step (default 0.25).
+
+        OUTPUTS: seed function to set some initial parameters of the chain, move one step by Hamiltonian dynamics, and an accept-reject procedure to counteract the effect of the numerics when solving for the Hamiltonian dynamics.
+
+    """
+
+    def __init__(self,fun_in,d=1,path_len=1,step_size=0.25):
+
+        self.path_len = path_len
+        self.step_size = step_size
+        self.steps = int(self.path_len/self.step_size) # path_len and step_size are tricky parameters to tune...
+        self.fun_in = fun_in
+        self.momentum_dist = dist.Gaussian(d,[[0.,1.]]*d)
+        self.grad = nd.Gradient(self.fun_in)
+        self.d = d
+
+    def seed(self,xini):
+        self.xcur = xini
+
+    def DoStep(self,nsteps):
+        for i in range(nsteps):
+            self.xcur=self.doOneStep()
+        return self.xcur
+
+    def doOneStep(self):
+        q0 = self.xcur
+        q1 = self.xcur
+        p0=[0]*self.d
+        for i in range(self.d):
+            p0[i] = self.momentum_dist.get_one_sample(pos=i) ## Draw from a N(0.1) 
+        p1 = p0 
+        dVdQ = self.grad(q0) # gradient of PDF wrt position (q0) aka potential energy wrt position
+
+        # leapfrog integration begin
+        for s in range(self.steps): 
+            p1 += self.step_size*dVdQ/2 # as potential energy increases, kinetic energy decreases, half-step
+            q1 += self.step_size*p1 # position increases as function of momentum 
+            p1 += self.step_size*dVdQ/2 # second half-step "leapfrog" update to momentum    
+        # leapfrog integration end        
+        p1 = -1*p1 #flip momentum for reversibility     
+
+        # metropolis acceptance
+        q0_nlp = -1*self.fun_in(q0)
+        q1_nlp = -1*self.fun_in(q1) 
+
+        p0_nlp = 0.
+        p1_nlp = 0.
+        for i in range(self.d):
+            p0_nlp += -1*self.momentum_dist.get_one_prop_logpdf_value(p0[i],pos=i) # Only because momentum dist is taken with no correlations (identity covariance matrix)
+            p1_nlp += -1*self.momentum_dist.get_one_prop_logpdf_value(p1[i],pos=i)     
+        
+        # Account for negatives AND log(probabilties)...
+        target = q0_nlp - q1_nlp 
+        adjustment = p1_nlp - p0_nlp
+        acceptance = target + adjustment 
+        
+        event = np.log(np.random.uniform())
+        if event <= acceptance:
+            return q1
+        else:
+            return q0

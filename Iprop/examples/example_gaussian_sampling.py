@@ -7,21 +7,30 @@ import sofia.sampler as mcmc
 def func(par):
     return -np.power(np.abs(par[0] - 0.),2)/(2*np.power(1.,2))-np.power(np.abs(par[1] - 5.),2)/(2*np.power(1.,2))
 
+## 1D Gaussian
+def func1D(par):
+    return -np.power(np.abs(par[0] - 0.),2)/(2*np.power(1.,2))
+
+d=2
+nburn = 10000
+nchain = 10000
+method = 'metropolis'
+
 # MCMC sampling
-sampler = mcmc.metropolis(np.identity(2),func,100000)
+sampler_choices = {'metropolis': mcmc.metropolis(np.identity(d),func,nburn), 'hamiltonian': mcmc.hamiltonian(func,d,path_len=0.5,step_size=0.1)}
 
-par = [1.]*2
-# sampler.SetCovProp([[0.0001,0.],[0.,0.0001]])
+sampler = sampler_choices[method]
+
+par = [1.]*d
 sampler.seed(par)
-sampler.Burn()
+if method=='metropolis':
+    sampler.Burn()
 
-XMCMC = []
+XMCMC = np.zeros((nchain,d))
 
-nchain = 100000
 for i in range(nchain):
-    XMCMC.append(sampler.DoStep(1))
-
-XMCMC = np.array(XMCMC)
+    XMCMC[i] = sampler.DoStep(1)
+    print("MCMC step: "+str(i))
 
 ## Trace plotting
 true1 = [np.random.normal(loc=0.,scale=1.) for i in range(nchain)]

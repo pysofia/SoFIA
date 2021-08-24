@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1629462315 "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf" "main" 1629462320
+["pdflatex"] 1629462315 "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.tex" "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf" "main" 1629465204
   "./figures/Iprop_ad_react_10000.png" 1629377768 94377 04773d388c40a0248a8266e7c778d5d3 ""
   "./figures/Iprop_ad_react_1obs.png" 1629379631 107678 67bb7d83a9cbeda075921bd3da7eceda ""
   "./figures/Iprop_post_check_10000_steady_Tinit.png" 1629462204 80175 4d5773649ee18e5745619a0fd43ecdd3 ""
@@ -250,9 +250,9 @@
   "main.out" 1629462320 200 cb4e44334fcda64922fd735562098191 "pdflatex"
   "main.tex" 1629462314 28654 aee2e1f03f07205816ae1f79c32806b0 ""
   (generated)
+  "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf"
+  "main.log"
+  "main.aux"
   "main.out"
   "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.log"
   "main.pdf"
-  "main.log"
-  "/Users/anabel/Documents/PhD/Code/SoFIA/Docs/main.pdf"
-  "main.aux"
