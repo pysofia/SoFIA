@@ -1,21 +1,47 @@
 {
     
     "1T": {
-        "baseline": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/rho_1T_recombination.sav"],
-        "recombination": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/rho_1T_recombination.sav"],
-        "SEB": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/rho_1T_recombination.sav"]
+        "baseline": {"G4": ["./models/rec/rec_1T_baseline.sav",
+            "./models/rho/G4/rho_1T_baseline.sav"],
+        "G5": ["./models/rec/rec_1T_baseline.sav",
+            "./models/rho/G5/rho_1T_baseline.sav"],
+        "G6": ["./models/rec/rec_1T_baseline.sav",
+            "./models/rho/G67/rho_1T_baseline.sav"],
+        "G7": ["./models/rec/rec_1T_baseline.sav",
+            "./models/rho/G67/rho_1T_baseline.sav"],
+        "priors": [[-4,0],[1200,1700],[2000,4000],[200,360],[9000,13000]]
+        },
+        "recombination": {"G4": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/G4/rho_1T_recombination.sav"],
+        "G5": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/G5/rho_1T_recombination.sav"],
+        "G6": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/G67/rho_1T_recombination.sav"],
+        "G7": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/G67/rho_1T_recombination.sav"],
+        "priors": [[-4,0],[-4,0],[1200,1700],[2000,4000],[200,360],[9000,13000]]
+        },
+        "SEB": {"G4": ["./models/rec/rec_1T_SEB.sav",
+            "./models/rho/G4/rho_1T_SEB.sav"],
+        "G5": ["./models/rec/rec_1T_SEB.sav",
+            "./models/rho/G5/rho_1T_SEB.sav"],
+        "G6": ["./models/rec/rec_1T_SEB.sav",
+            "./models/rho/G67/rho_1T_SEB.sav"],
+        "G7": ["./models/rec/rec_1T_SEB.sav",
+            "./models/rho/G67/rho_1T_SEB.sav"],
+        "priors": [[-4,0],[-4,0],[1200,1700],[200,360],[9000,13000]]
+        }
     },
     "2T": {
-        "recombination": {
-            "mean": 0.31638988419819336,
-            "std-dev": -0.08918588236575778
-        },
-        "SEB": {
-            "mean": 0.31638988419819336,
-            "std-dev": -0.08918588236575778
+        "SEB": {"G4": ["./models/rec/rec_2T_SEB.sav",
+            "./models/rho/G4/rho_2T_SEB.sav"],
+        "G5": ["./models/rec/rec_2T_SEB.sav",
+            "./models/rho/G5/rho_2T_SEB.sav"],
+        "G6": ["./models/rec/rec_2T_SEB.sav",
+            "./models/rho/G67/rho_2T_SEB.sav"],
+        "G7": ["./models/rec/rec_2T_SEB.sav",
+            "./models/rho/G67/rho_2T_SEB.sav"],
+        "priors": [[-4,0],[-4,0],[1200,1700],[200,360],[9000,13000],[-1,1],[0,1]]
         }
     }
 }

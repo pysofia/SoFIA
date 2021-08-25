@@ -24,8 +24,8 @@ mix = mpp.Mixture(opts)
 with open('./models/models.json') as json_file:
     models = json.load(json_file)
 
-rec_mod = pickle.load(open(models[sys.argv[3]][sys.argv[4]][0], 'rb'))
-rho_mod = pickle.load(open(models[sys.argv[3]][sys.argv[4]][1], 'rb'))
+rec_mod = pickle.load(open(models[sys.argv[3]][sys.argv[4]][sys.argv[1]][0], 'rb'))
+rho_mod = pickle.load(open(models[sys.argv[3]][sys.argv[4]][sys.argv[1]][1], 'rb'))
 
 ##
 
@@ -36,10 +36,10 @@ def ve_betae(X): # X = (T, pres, Pd)
 
     Vs_ext = np.power(2*X[0]/1.1/rhoe,0.5) #; //Kp = 1.1
     
-    ve = Vs_ext*0.358134725
+    ve = Vs_ext*cases[sys.argv[1]]["NDPs"][4]
 
     V_torch = ve/cases[sys.argv[1]]["NDPs"][3] #; //NDP_ve = NDP4
-    betae = V_torch*0.5169989517/0.025
+    betae = V_torch*cases[sys.argv[1]]["NDPs"][1]/0.025
 
     vect = np.zeros(2)
     vect[0] += ve
@@ -56,7 +56,7 @@ def rec(V):
 
 ##
 ## Priors ##
-hyp = [[-4.,0.],[-4.,0.],[1200.,1700.],[2000.,4000.],[200,360.],[9000.,13000.]] # [Gnit,Grec,Ps,Tw,Pd,Te]
+hyp = models[sys.argv[3]][sys.argv[4]]['priors'] # [Gnit,Grec,Ps,Tw,Pd,Te]
 prior = dist.Uniform(len(hyp),hyp)
 
 ##
@@ -105,7 +105,7 @@ def log_likelihood(Xi):
 
     Xi_denorm = denormalization(Xi,hyp)
 
-    return Lik.get_one_prop_logpdf_value(Xi_denorm[2],0) + Lik.get_one_prop_logpdf_value(Xi_denorm[3],1) + Lik.get_one_prop_logpdf_value(Xi_denorm[4],2) + Lik.get_one_prop_logpdf_value(np.power(10,rho(V)),4) + Lik.get_one_prop_logpdf_value(np.power(10,rec(V)),3)
+    return Lik.get_one_prop_logpdf_value(Xi_denorm[2],0) + Lik.get_one_prop_logpdf_value(Xi_denorm[3],1) + Lik.get_one_prop_logpdf_value(Xi_denorm[4],2) + Lik.get_one_prop_logpdf_value(np.power(10,rec(V)),3)+Lik.get_one_prop_logpdf_value(np.power(10,rho(V)),4)
 
 def m_log_likelihood(Xi):
     return -1*log_likelihood(Xi)
@@ -129,7 +129,9 @@ for i in range(nchain):
     XMCMC[i] = sampler.DoStep(1)
     print("MCMC step: "+str(i))
 
-with open('./chain_SoFIA.dat','w') as ch:
+filename = './chain_'+sys.argv[1]+'_'+sys.argv[2]+'_'+sys.argv[3]+sys.argv[4]+'.dat'
+
+with open(filename,'w') as ch:
     for i in range(len(XMCMC)):
         ch.write(str(XMCMC[i,0])+' '+str(XMCMC[i,1])+' '+str(XMCMC[i,2])+' '+str(XMCMC[i,3])+' '+str(XMCMC[i,4])+' '+str(XMCMC[i,5])+'\n')
 
