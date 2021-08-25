@@ -101,7 +101,7 @@ def solver(params):
     # time_reaction = np.array(time)
 
     while (time < time_final):
-        dt = min(dt * 1.0002, 1.e-10)
+        dt = min(dt * 1.0002, 1.e-10) #1.e-10
         drhoi = runge_kutta4(mix, rhoi, total_energy, dt)
         rhoi += drhoi
         time += dt
@@ -151,9 +151,25 @@ def log_likelihood(Xi):
 
     for i in range(len(Xi)):
         if Xi[i]<prior.lb[i]:
+            # s = solver(Xi)
+
+            # value = 0.
+            # for i in range(n_obs):
+            #     value += Lik.get_one_prop_logpdf_value(s[t_obs[i]],i)
             return -1.e16
+
         elif Xi[i]>prior.ub[i]:
+
+            # Xi[i] = prior.ub[i]
+            # s = solver(Xi)
+
+            # value = 0.
+            # for i in range(n_obs):
+            #     value += Lik.get_one_prop_logpdf_value(s[t_obs[i]],i)
             return -1.e16
+
+        else:
+            continue
 
     s = solver(Xi)
 
@@ -169,23 +185,31 @@ def mlog_likelihood(Xi):
 
 ## Looking for the MAP point to start sampling ##
 par = [21.,21.,11.,11.,11.,12.]
-res = scipy.optimize.minimize(mlog_likelihood,par,method='Nelder-Mead',tol=1e-6)
-print("MAP found at: "+str(res.x))
+# res = scipy.optimize.minimize(mlog_likelihood,par,method='Nelder-Mead',tol=1e-6)
+# print("MAP found at: "+str(res.x))
 
 # MCMC sampling
-sampler = mcmc.metropolis(np.identity(6)*0.01,log_likelihood,10000)
+sampler = mcmc.metropolis(np.identity(6)*0.01,log_likelihood,1000)
+# sampler = mcmc.hamiltonian(log_likelihood,6,path_len=0.5,step_size=0.1)
 
-sampler.seed(res.x)
+sampler.seed(par)
 sampler.Burn()
 
-XMCMC = []
+nchain = 1000
+XMCMC = np.zeros((nchain,6))
 
-nchain = 10000
 for i in range(nchain):
-    XMCMC.append(sampler.DoStep(1))
-    print('Step: '+ str(i))
+    XMCMC[i] = sampler.DoStep(1)
+    print("MCMC step: "+str(i))
 
-XMCMC = np.array(XMCMC)
+# XMCMC = []
+
+# nchain = 1000
+# for i in range(nchain):
+#     XMCMC.append(sampler.DoStep(1))
+#     print('Step: '+ str(i))
+
+# XMCMC = np.array(XMCMC)
 
 ## Plotting noisy observations and calibrated model ##
 
@@ -239,5 +263,5 @@ plt.show()
 var = [0,1,2,3,4,5] # Position in XMCMC chain
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
-sampler_diag.chain_visual(6,var,5000) # 5 plots, show 5000 samples
-sampler_diag.autocorr(100,6,var) # 70 lags
+sampler_diag.chain_visual(6,var,1000) # 5 plots, show 5000 samples
+sampler_diag.autocorr(70,6,var) # 70 lags

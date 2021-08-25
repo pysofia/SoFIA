@@ -5,6 +5,11 @@ import sofia.sampler as mcmc
 
 ## 2D Gaussian
 def func(par):
+    for i in range(len(par)):
+        if par[i]<-10.:
+            return -np.power(np.abs(par[0] - 0.),2)/(2*np.power(1.,2))-np.power(np.abs(par[1] - 5.),2)/(2*np.power(1.,2))-1.e16
+        elif par[i]>10.:
+            return -np.power(np.abs(par[0] - 0.),2)/(2*np.power(1.,2))-np.power(np.abs(par[1] - 5.),2)/(2*np.power(1.,2))-1.e16
     return -np.power(np.abs(par[0] - 0.),2)/(2*np.power(1.,2))-np.power(np.abs(par[1] - 5.),2)/(2*np.power(1.,2))
 
 ## 1D Gaussian
@@ -14,7 +19,7 @@ def func1D(par):
 d=2
 nburn = 10000
 nchain = 10000
-method = 'metropolis'
+method = 'hamiltonian'
 
 # MCMC sampling
 sampler_choices = {'metropolis': mcmc.metropolis(np.identity(d),func,nburn), 'hamiltonian': mcmc.hamiltonian(func,d,path_len=0.5,step_size=0.1)}

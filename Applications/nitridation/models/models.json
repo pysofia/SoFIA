@@ -1,0 +1,21 @@
+{
+    
+    "1T": {
+        "baseline": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/rho_1T_recombination.sav"],
+        "recombination": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/rho_1T_recombination.sav"],
+        "SEB": ["./models/rec/rec_1T_recombination.sav",
+            "./models/rho/rho_1T_recombination.sav"]
+    },
+    "2T": {
+        "recombination": {
+            "mean": 0.31638988419819336,
+            "std-dev": -0.08918588236575778
+        },
+        "SEB": {
+            "mean": 0.31638988419819336,
+            "std-dev": -0.08918588236575778
+        }
+    }
+}

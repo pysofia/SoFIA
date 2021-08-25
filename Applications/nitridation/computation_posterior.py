@@ -1,35 +1,44 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import scipy
-from sklearn import gaussian_process
-from sklearn.gaussian_process.kernels import Matern, RBF
 from scipy.optimize import minimize
 import sofia.sampler as mcmc
-import seaborn as sns
-import matplotlib.pyplot as plt
-import mutationpp as mpp
 import sofia.distributions as dist
+import mutationpp as mpp
+import seaborn as sns
 import pickle
+import json
+import sys
 
 ## Setting up Mutation++ options and mixture
-opts = mpp.MixtureOptions("air_11")
+opts = mpp.MixtureOptions("nitrogen-ions-carbon_9_olynick99")
 opts.setThermodynamicDatabase("RRHO")
 opts.setStateModel("ChemNonEq1T")
 
-mix = mpp.Mixture("air_11")
+mix = mpp.Mixture("nitrogen-ions-carbon_9_olynick99")
 mix = mpp.Mixture(opts)
+
+##
+
+# Loading stagline models
+with open('./models/models.json') as json_file:
+    models = json.load(json_file)
+
+rec_mod = pickle.load(open(models[sys.argv[3]][sys.argv[4]][0], 'rb'))
+rho_mod = pickle.load(open(models[sys.argv[3]][sys.argv[4]][1], 'rb'))
 
 ##
 
 def ve_betae(X): # X = (T, pres, Pd)
     
-    mix.equilibrate(X[0], X[1])
+    mix.equilibrate(X[2], X[1])
     rhoe = mix.density()
 
-    Vs_ext = np.power(2*X[2]/1.1/rhoe,0.5) #; //Kp = 1.1
+    Vs_ext = np.power(2*X[0]/1.1/rhoe,0.5) #; //Kp = 1.1
     
     ve = Vs_ext*0.358134725
 
-    V_torch = ve/0.3000427364 #; //NDP_ve = NDP4
+    V_torch = ve/cases[sys.argv[1]]["NDPs"][3] #; //NDP_ve = NDP4
     betae = V_torch*0.5169989517/0.025
 
     vect = np.zeros(2)
@@ -38,38 +47,42 @@ def ve_betae(X): # X = (T, pres, Pd)
 
     return vect
 
-## Priors ##
-hyp = [[-4.,0.],[-4.,0.],[1200.,1700.],[2000.,4000.],[200,360.],[9000.,13000.]] # [Gnit,Grec,Ps,Tw,Pd,Te]
-prior = dist.Uniform(6,hyp)
-
-##
-
-# Prior denormalization
-def denormalization(Xi,hyp):
-    for i in range(len(hyp)):
-        Xi[i] = prior.lb[i]+(Xi[i]*(prior.ub[i]-prior.lb[i]))
-    return Xi
-
 ## GP models ##
 def rho(V):
-    return GP_rho.predict(V)
+    return rho_mod.predict(V)[0]
 
 def rec(V):
-    return GP_rec.predict(V)
+    return rec_mod.predict(V)[0]
 
 ##
+## Priors ##
+hyp = [[-4.,0.],[-4.,0.],[1200.,1700.],[2000.,4000.],[200,360.],[9000.,13000.]] # [Gnit,Grec,Ps,Tw,Pd,Te]
+prior = dist.Uniform(len(hyp),hyp)
 
-## Likelihood definition
-h=[[1500.,22.5],[2410.,12.05],[268.,2.68],[1.64e-06,0.275e-06],[0.8e-06,1.0e-07]] # [Ps,Tw,Pd,rec,rho]
-Lik = dist.Gaussian(5,h)
+##
+# Prior denormalization
+def denormalization(Xi,hyp):
+    Xi_denorm = [0.]*len(Xi)
+    for i in range(len(hyp)):
+        Xi_denorm[i] = prior.lb[i]+(Xi[i]*(prior.ub[i]-prior.lb[i]))
+    return Xi_denorm
+
+## Likelihood definition: setting up the experimental case to run
+with open('cases.json') as json_file:
+    cases = json.load(json_file)
+
+if sys.argv[2] =='all':
+    h = [[1500.,22.5],[cases[sys.argv[1]]['Tw']['mean'],cases[sys.argv[1]]['Tw']['std-dev']],[cases[sys.argv[1]]['Pd']['mean'],cases[sys.argv[1]]['Pd']['std-dev']],[cases[sys.argv[1]]['recession']['mean'],cases[sys.argv[1]]['recession']['std-dev']],[cases[sys.argv[1]]['density']['mean'],cases[sys.argv[1]]['density']['std-dev']]]
+else:
+    h = [[1500.,22.5],[cases[sys.argv[1]]['Tw']['mean'],cases[sys.argv[1]]['Tw']['std-dev']],[cases[sys.argv[1]]['Pd']['mean'],cases[sys.argv[1]]['Pd']['std-dev']],[cases[sys.argv[1]][sys.argv[2]]['mean'],cases[sys.argv[1]][sys.argv[2]]['std-dev']]]
+
+Lik = dist.Gaussian(len(h),h)
 
 ## Log-likelihood function
 def log_likelihood(Xi):
 
     for i in range(len(Xi)):
-        if Xi[i]<0:
-            return -1.e16
-        elif Xi[i]>1:
+        if Xi[i]<0 or Xi[i]>1:
             return -1.e16
 
     V = np.zeros(7)
@@ -90,125 +103,31 @@ def log_likelihood(Xi):
     V[4] += (betae - 20000.)/44000. # //beta e
     V = [V]
 
-    value = 0.
-    for i in range(n_obs):
-        value += Lik.get_one_prop_logpdf_value(s[t_obs[i]],i)
+    Xi_denorm = denormalization(Xi,hyp)
 
-    value = 0.
-    for i,j in zip(range(3),range(3)):
-        value += np.log(Lik.get_one_pdf_value(prior.lb[j+2]+(Xi[j+2]*(prior.ub[j+2]-prior.lb[j+2])),i)+1.e-16)
+    return Lik.get_one_prop_logpdf_value(Xi_denorm[2],0) + Lik.get_one_prop_logpdf_value(Xi_denorm[3],1) + Lik.get_one_prop_logpdf_value(Xi_denorm[4],2) + Lik.get_one_prop_logpdf_value(np.power(10,rho(V)),4) + Lik.get_one_prop_logpdf_value(np.power(10,rec(V)),3)
 
-    value += np.log(Lik.get_one_pdf_value(np.power(10,rec(V)),3)+1.e-16)+np.log(Lik.get_one_pdf_value(np.power(10,rho(V)),4)+1.e-16)
-
-    return value
-
-# def m_log_likelihood(Xi):
-#     return -1*log_likelihood(Xi)
-
-## log Likelihood to sample from ##
-# def log_Lik(Xi):
-
-#     for i in range(len(Xi)):
-#         if Xi[i]<0:
-#             return -1.e16
-#         elif Xi[i]>1:
-#             return -1.e16
-
-#     V = np.zeros(7)
-#     V[0] += Xi[0] # //Ps
-#     V[1] += Xi[1] # //Tw
-#     V[2] += Xi[2] # //Te
-#     V[5] += Xi[4] # //Gnit
-#     V[6] += Xi[5] # //Grec
-
-#     X = np.zeros(3)
-#     X[0] += Te_value(Xi[2])
-#     X[1] += Ps_value(Xi[0])
-#     X[2] += Pd_value(Xi[3])
-
-#     ve, betae = ve_betae(X)
-
-#     V[3] += (ve - 300.)/900. # //ve
-#     V[4] += (betae - 20000.)/44000. # //beta e
-#     V = [V]
- 
-#     return -np.power(np.abs(Ps_value(0.6)-Ps_value(Xi[0])),2)/(2*np.power(22.5,2))-np.power(np.abs(0.8e-06-np.power(10,rho(V))),2)/(2*np.power(1.0e-07,2))-np.power(np.abs(Tw_value(0.205)-Tw_value(Xi[1])),2)/(2*np.power(12.05,2))-np.power(np.abs(Pd_value(0.425)-Pd_value(Xi[3])),2)/(2*np.power(2.68,2))-np.power(np.abs(1.64e-06-np.power(10,rec(V))),2)/(2*np.power(0.275e-06,2))
-
-## - log lik to minimize by Nelder-Mead to find MAP ##
-# def Lik(Xi):
-
-#     for i in range(len(Xi)):
-#         if Xi[i]<0:
-#             return -1.e16
-#         elif Xi[i]>1:
-#             return -1.e16
-
-#     V = np.zeros(7)
-#     V[0] += Xi[0] # //Ps
-#     V[1] += Xi[1] # //Tw
-#     V[2] += Xi[2] # //Te
-#     V[5] += Xi[4] # //Gnit
-#     V[6] += Xi[5] # //Grec
-
-#     X = np.zeros(3)
-#     X[0] += Te_value(Xi[2])
-#     X[1] += Ps_value(Xi[0])
-#     X[2] += Pd_value(Xi[3])
-
-#     ve, betae = ve_betae(X)
-
-#     V[3] += (ve - 300.)/900. # //ve
-#     V[4] += (betae - 20000.)/44000. # //beta e
-#     V = [V]
- 
-#     return -1*(-np.power(np.abs(Ps_value(0.6)-Ps_value(Xi[0])),2)/(2*np.power(22.5,2))-np.power(np.abs(0.8e-06-np.power(10,rho(V))),2)/(2*np.power(1.0e-07,2))-np.power(np.abs(Tw_value(0.205)-Tw_value(Xi[1])),2)/(2*np.power(12.05,2))-np.power(np.abs(Pd_value(0.425)-Pd_value(Xi[3])),2)/(2*np.power(2.68,2))-np.power(np.abs(1.64e-06-np.power(10,rec(V))),2)/(2*np.power(0.275e-06,2)))
-##
-## Loading training data ##
-realizations_dir = '/Users/anabel/Documents/PhD/Code/stagline/Nitridation_1T/Recombination/realizations_G5_incomplete.dat'
-data_dir = '/Users/anabel/Documents/PhD/Code/stagline/Nitridation_1T/Recombination/points_incomplete.dat'
-
-X = np.loadtxt(data_dir)
-Y = np.loadtxt(realizations_dir)
-
-## Training GPs ##
-kernel = Matern(length_scale=2, nu=3/2)
-# kernel = RBF(length_scale=2)
-
-GP_rec = gaussian_process.GaussianProcessRegressor(kernel=kernel,normalize_y=False)
-GP_rec.fit(X, Y[:,0])
-
-GP_rho = gaussian_process.GaussianProcessRegressor(kernel=kernel,normalize_y=False)
-GP_rho.fit(X, Y[:,1])
-
-# save the model to disk
-# filename = 'rec_1T_recombination.sav'
-# filename2 = 'rho_1T_recombination.sav'
-
-# pickle.dump(GP_rec, open(filename, 'wb'))
-# pickle.dump(GP_rho, open(filename2, 'wb'))
-
-# exit(0)
+def m_log_likelihood(Xi):
+    return -1*log_likelihood(Xi)
 
 ## Looking for the MAP point to start sampling ##
 Xi = [0.5]*6
-# res = scipy.optimize.minimize(m_log_likelihood,Xi,method='Nelder-Mead',tol=1e-6)
-# print("MAP found at: "+str(res.x))
+res = scipy.optimize.minimize(m_log_likelihood,Xi,method='Nelder-Mead',tol=1e-6)
+print("MAP found at: "+str(res.x))
 
 # MCMC sampling
-sampler = mcmc.metropolis(np.identity(6)*0.01,log_likelihood,100000)
+nburn = 100000
+sampler = mcmc.metropolis(np.identity(len(hyp))*0.01,log_likelihood,nburn)
 
-par = Xi
-sampler.seed(par)
+sampler.seed(res.x)
 sampler.Burn()
 
-XMCMC = []
-
 nchain = 100000
-for i in range(nchain):
-    XMCMC.append(sampler.DoStep(1))
-    print('Step: '+ str(i))
+XMCMC = np.zeros((nchain,len(hyp)))
 
-XMCMC = np.array(XMCMC)
+for i in range(nchain):
+    XMCMC[i] = sampler.DoStep(1)
+    print("MCMC step: "+str(i))
 
 with open('./chain_SoFIA.dat','w') as ch:
     for i in range(len(XMCMC)):
@@ -216,18 +135,18 @@ with open('./chain_SoFIA.dat','w') as ch:
 
 ## Trace plotting
 
-sns.kdeplot(4*XMCMC[:,-2]-4.,label='gnit',shade=True)
+sns.kdeplot(4*XMCMC[:,0]-4.,label='gnit',shade=True)
+sns.kdeplot(4*XMCMC[:,1]-4.,label='grec',shade=True)
 plt.xlim(-4.,0.)
-# sns.kdeplot(XMCMC[:,-1],label='b')
 plt.legend()
 plt.show()
 
 ## Chain diagnostics
 
-dict_var={0:'a',-1:'b'} # The way they are positioned in MCMC chain
+dict_var={0:'gnit',1:'grec'} # The way they are positioned in MCMC chain
 
-var = [-1] # Position in XMCMC chain
+var = [0,1] # Position in XMCMC chain
 
 sampler_diag = mcmc.diagnostics(XMCMC,dict_var)
-sampler_diag.chain_visual(1,var)
-sampler_diag.autocorr(100,1,var)
+sampler_diag.chain_visual(2,var,1000)
+sampler_diag.autocorr(100,2,var)

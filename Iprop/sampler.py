@@ -188,7 +188,7 @@ class hamiltonian(dist.Gaussian):
         self.steps = int(self.path_len/self.step_size) # path_len and step_size are tricky parameters to tune...
         self.fun_in = fun_in
         self.momentum_dist = dist.Gaussian(d,[[0.,1.]]*d)
-        self.grad = nd.Gradient(self.fun_in)
+        self.grad = nd.Gradient(self.fun_in,step=0.01)
         self.d = d
 
     def seed(self,xini):
