@@ -6,7 +6,9 @@ dist/sofia-0.1-py3.6.egg
 sofia/.DS_Store
 sofia/Sobol.py
 sofia/__init__.py
+sofia/data_assembly.py
 sofia/distributions.py
+sofia/models.py
 sofia/pc.py
 sofia/sampler.py
 sofia.egg-info/PKG-INFO

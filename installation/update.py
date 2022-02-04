@@ -20,6 +20,8 @@ shutil.copy(root + '/SoFIA/Iprop/sampler.py',dirName)
 shutil.copy(root + '/SoFIA/Probability_distributions/distributions.py',dirName)
 shutil.copy(root + '/SoFIA/SA/Sobol.py',dirName)
 shutil.copy(root + '/SoFIA/Fprop/pc.py',dirName)
+shutil.copy(root + '/SoFIA/Applications/nitridation/models.py',dirName)
+shutil.copy(root + '/SoFIA/Applications/nitridation/data_assembly.py',dirName)
 
 # ---------------------------------
 # Update SoFIA

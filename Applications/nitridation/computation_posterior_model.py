@@ -167,8 +167,8 @@ X = np.loadtxt(data_dir)
 Y = np.loadtxt(realizations_dir)
 
 ## Training GPs ##
-kernel = Matern(length_scale=2, nu=3/2)
-# kernel = RBF(length_scale=2)
+# kernel = Matern(length_scale=2, nu=3/2)
+kernel = RBF(length_scale=2)
 
 GP_rec = gaussian_process.GaussianProcessRegressor(kernel=kernel,normalize_y=False)
 GP_rec.fit(X, Y[:,0])
@@ -176,12 +176,15 @@ GP_rec.fit(X, Y[:,0])
 GP_rho = gaussian_process.GaussianProcessRegressor(kernel=kernel,normalize_y=False)
 GP_rho.fit(X, Y[:,1])
 
+GP_Tw = gaussian_process.GaussianProcessRegressor(kernel=kernel,normalize_y=False)
+GP_Tw.fit(X, Y[:,2])
+
 # save the model to disk
 # filename = './models/rec/rec_2T_SEB.sav'
-filename2 = './models/rho/G67/rho_2T_SEB.sav'
+filename2 = './models/Tw/Tw_2T_SEB.sav'
 
 # pickle.dump(GP_rec, open(filename, 'wb'))
-pickle.dump(GP_rho, open(filename2, 'wb'))
+pickle.dump(GP_Tw, open(filename2, 'wb'))
 exit(0)
 
 # exit(0)
