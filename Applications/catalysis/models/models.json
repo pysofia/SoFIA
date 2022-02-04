@@ -1,76 +1,10 @@
 {
     
-    "1T": {
-        "baseline": {"G4": ["./models/rec/rec_1T_baseline.sav",
-            "./models/rho/G4/rho_1T_baseline.sav"],
-        "G5": ["./models/rec/rec_1T_baseline.sav",
-            "./models/rho/G5/rho_1T_baseline.sav"],
-        "G6": ["./models/rec/rec_1T_baseline.sav",
-            "./models/rho/G67/rho_1T_baseline.sav"],
-        "G7": ["./models/rec/rec_1T_baseline.sav",
-            "./models/rho/G67/rho_1T_baseline.sav"],
-        "priors": [[-4,0],[1200,1700],[2000,4000],[9000,13000],[200,360]],
-        "indexes": {
-            "Gnit": 0, "Ps": 1, "Tw": 2, "Pd": 4, "Te": 3
-        },
+    "MATt1": "./models/rec/rec_1T_baseline.sav",
+        "priors": [[-4,0],[-4,0]],
         "inputs": {
-            "Ps": 0, "Gnit": 5, "Tw": 1, "ve": 3, "betae": 4, "Te": 2
+            "Gref": 0, "GTPS": 5
         }
         
-        },
-        "recombination": {"G4": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/G4/rho_1T_recombination.sav"],
-        "G5": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/G5/rho_1T_recombination.sav"],
-        "G6": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/G67/rho_1T_recombination.sav"],
-        "G7": ["./models/rec/rec_1T_recombination.sav",
-            "./models/rho/G67/rho_1T_recombination.sav"],
-        "priors": [[-4,0],[-4,0],[1200,1700],[2000,4000],[200,360],[9000,13000]],
-        "indexes": {
-            "Gnit": 0, "Grec": 1, "Ps": 2, "Tw": 3, "Pd": 4, "Te": 5
-        },
-        "inputs": {
-            "Ps": 0, "Gnit": 5, "Tw": 1, "ve": 3, "betae": 4, "Te": 2, "Grec": 6
         }
-        },
-        "SEB": {"G4": ["./models/rec/rec_1T_SEB.sav",
-            "./models/rho/G4/rho_1T_SEB.sav","./models/Tw/Tw_1T_SEB.sav"],
-        "G5": ["./models/rec/rec_1T_SEB.sav",
-            "./models/rho/G5/rho_1T_SEB.sav","./models/Tw/Tw_1T_SEB.sav"],
-        "G6": ["./models/rec/rec_1T_SEB.sav",
-            "./models/rho/G67/rho_1T_SEB.sav","./models/Tw/Tw_1T_SEB.sav"],
-        "G7": ["./models/rec/rec_1T_SEB.sav",
-            "./models/rho/G67/rho_1T_SEB.sav","./models/Tw/Tw_1T_SEB.sav"],
-        "priors": [[-4,0],[-4,0],[1200,1700],[200,360],[9000,13000]],
-        "indexes": {
-            "Gnit": 0, "Grec": 1, "Ps": 2, "Pd": 3, "Te": 4
-        },
-        "inputs": {
-            "Ps": 0, "Gnit": 4, "ve": 2, "betae": 3, "Te": 1, "Grec": 5
-        }
-        }
-    },
-    "2T": {
-        "SEB": {"G4": ["./models/rec/rec_2T_SEB.sav",
-            "./models/rho/G4/rho_2T_SEB.sav","./models/Tw/Tw_2T_SEB.sav"],
-        "G5": ["./models/rec/rec_2T_SEB.sav",
-            "./models/rho/G5/rho_2T_SEB.sav","./models/Tw/Tw_2T_SEB.sav"],
-        "G6": ["./models/rec/rec_2T_SEB.sav",
-            "./models/rho/G67/rho_2T_SEB.sav","./models/Tw/Tw_2T_SEB.sav"],
-        "G7": ["./models/rec/rec_2T_SEB.sav",
-            "./models/rho/G67/rho_2T_SEB.sav","./models/Tw/Tw_2T_SEB.sav"],
-        "priors": [[-4,0],[-4,0],[1200,1700],[200,360],[9000,13000],[0.5,1],[0,1],[-1,1]],
-        "indexes": {
-            "Gnit": 0, "Grec": 1, "Ps": 2, "Pd": 3, "Te": 4, "epsilon": 5, "alpha": 6, "beta": 7
-        },
-        "inputs": {
-            "Ps": 0, "Gnit": 4, "ve": 2, "betae": 3, "Te": 1, "Grec": 5, "epsilon": 6, "alpha": 7, "beta": 8
-        }
-        }
-    },
-    "Arrhenius_priors": [[-4,0],[2000,10000]],
-    "Arrhenius_indexes": {
-        "A": 0, "Ta": 1
-    }
 }
