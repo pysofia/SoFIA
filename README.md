@@ -1,7 +1,7 @@
 
 ## SoFIA
 **So**bol-based sensitivity analysis, **F**orward and **I**nverse uncertainty propagation for **A**pplication to high temperature gases.
-
+![](image.png)
 ## Installation ##
 
 To install SoFIA just do in your terminal in the directory of your choice (python3 or python depending on how you use your local python installation)
