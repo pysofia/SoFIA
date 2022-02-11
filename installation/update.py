@@ -22,6 +22,8 @@ shutil.copy(root + '/SoFIA/SA/Sobol.py',dirName)
 shutil.copy(root + '/SoFIA/Fprop/pc.py',dirName)
 shutil.copy(root + '/SoFIA/Applications/nitridation/models.py',dirName)
 shutil.copy(root + '/SoFIA/Applications/nitridation/data_assembly.py',dirName)
+shutil.copy(root + '/SoFIA/Applications/catalysis/data_assembly_cat.py',dirName)
+shutil.copy(root + '/SoFIA/GPR/GPR.py',dirName)
 
 # ---------------------------------
 # Update SoFIA

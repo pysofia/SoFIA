@@ -403,6 +403,31 @@ If we were to run a sensitivity analysis again, this time with the initial tempe
     \label{fig:ad_react_SA_Tinit2}
 \end{figure}
 
+\noindent \textbf{Heterogeneous catalysis for reusable TPS ground testing and enthalpy rebuilding.} This application pertains to my PhD thesis work. We calibrate a chemically reacting flow model in chemical non-equilibrium with plasma wind tunnel experimental data. We look for the resulting uncertainty on the catalytic coefficients of the different materials tested for each independent experimental run. For more technical details see footnote\footnote{A. del Val, Bayesian calibration and assessment of gas-surface interaction models and experiments in atmospheric entry plasmas, IPP/VKI, 2021 - \url{www.doi.org/10.13140/RG.2.2.27055.82089}}.
+
+In SoFIA, in the \texttt{Applications/catalysis/models} folder, we include the saved Gaussian Process (GP) models for each experimental run of names \texttt{MTAt1,2,...}. These GP models are built to approximate the log-likelihood functions of the experiments. In turn, such models are used to run an MCMC algorithm and compute the marginal posterior distributions on the quantities of interest (catalytic efficiency parameters).
+
+Two major ``ingredients'' are used for the computation of the posterior in \texttt{computation\_posterior.py} the \texttt{json} file \texttt{models.json}, and the file \texttt{data\_assembly\_cat.py}. \\
+
+\noindent The file \texttt{models.json} contains a dictionary where the models can be called together with the priors used for their input variables and the order or the inputs to the model in the form of indexes (\texttt{inputs} in the \texttt{json} file dictionary).\\
+
+\noindent The file \texttt{data\_assembly\_cat.py} contains the class to assemble the likelihood function needed for the subsequent Bayesian analysis. In it, the log-likelihood function is loaded the hyperparameters for the different priors as well as de-normalization of the inputs are specified.\\
+
+\noindent To run completely new cases, the \textbf{suggested workflow} is as follows:
+
+\begin{enumerate}
+    \item Run the optimal algorithm in a grid of points \\
+    (\texttt{catalysis/}\texttt{utilities/}\texttt{sampler}\texttt{\_opt}\texttt{\_loglik.py}). This first step is suposed to be custom-made as it will depend on the solver and how it inputs and outputs data. For the particular case of the Boundary Layer Code at VKI, a dirty script I made is included. This script contains the \texttt{BL} function which computes the heat flux given a set of parameters \texttt{x0} and the catalytic parameters \texttt{gamma} which are vectors. The function \texttt{functional} is the function to minimize, it is the negative log-likelihood function. The important snippet of this script is the \texttt{main loop} which basically goes over the grid of gamma values and finds the optimal values of the log-likelihood function by searching on \texttt{x0}. The values of \texttt{x0} and \texttt{gamma}, together with the negative log-likelihood values are written in the file \texttt{output.out}. NOTE: We are looking for the maximizers of the log-likelihood function. As we use an optimization algorithm (Nelder-Mead) which minimizes an objective function, we change the sign of the log-likelihood function to be the negative log-likelihood function, and this is the value that is printed out in \texttt{output.out}.
+    \item Use \texttt{catalysis/models/save\_GP.py} and \texttt{catalysis/models/save\_H\_GP.py} to save GP models that approximate the optimal log-likelihood function and the optimal enthalpy based on the points previously computed.
+    \item In the file \texttt{catalysis/models/models.json}, save the data of your case.
+    \item Use the model to compute the posterior distribution and obtain the resulting chain from the MCMC algorithm with \texttt{catalysis/computation\_posterior.py}. The resulting MCMC chain can be used in \texttt{catalysis/computation\_H\_optimal.py} to compute the $H^{\mathrm{opt}}$ enthalpy.
+    \item Check diagnostics.
+    \item Re-run additional points of the optimal log-likelihood algorithm in the area where MCMC drew points.
+    \item Start from point 2.
+\end{enumerate}
+
+\textbf{Proposed diagnostics.} A tricky issue may arise for non-experts in these analyses. The workflow described cannot be run blindly, without thoroughly asserting the quality of the results. As this requires some in-depth knowledge of the analyses, I propose here a quick way of checking is the GP surrogate + MCMC sampling give reasonable results or if the surrogate estimation would need additional points.
+
 \noindent \textbf{Nitrogen ablation.}
 
 

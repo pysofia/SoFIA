@@ -4,9 +4,11 @@ update.py
 dist/.DS_Store
 dist/sofia-0.1-py3.6.egg
 sofia/.DS_Store
+sofia/GPR.py
 sofia/Sobol.py
 sofia/__init__.py
 sofia/data_assembly.py
+sofia/data_assembly_cat.py
 sofia/distributions.py
 sofia/models.py
 sofia/pc.py

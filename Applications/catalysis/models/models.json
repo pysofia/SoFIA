@@ -1,9 +1,71 @@
 {
     
-    "MATt1": "./models/rec/rec_1T_baseline.sav",
-        "priors": [[-4,0],[-4,0]],
+    "MTAt1": {"model": {"loglik": "./models/MTAt1.sav",
+            "enthalpy": "./models/H_MTAt1.sav"
+        },
+        "priors": [[-4,-2],[-3,0],[-4,-1.3]],
         "inputs": {
-            "Gref": 0, "GTPS": 5
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
+        }
+        
+        },
+
+    "MTAt2": {"model": {"loglik": "./models/MTAt2.sav",
+            "enthalpy": "./models/H_MTAt2.sav"
+        },
+        "priors": [[-4,-1],[-3,0],[-3,-1]],
+        "inputs": {
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
+        }
+        
+        },
+
+    "MTAt3": {"model": {"loglik": "./models/MTAt3.sav",
+            "enthalpy": "./models/H_MTAt3.sav"
+        },
+        "priors": [[-4,-1.5],[-2.2,0],[-3,-1]],
+        "inputs": {
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
+        }
+        
+        },
+
+    "MTAt4": {"model": {"loglik": "./models/MTAt4.sav",
+            "enthalpy": "./models/H_MTAt4.sav"
+        },
+        "priors": [[-4,-2.5],[-2,0],[-3,-1]],
+        "inputs": {
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
+        }
+        
+        },
+
+    "MTAt5": {"model": {"loglik": "./models/MTAt5.sav",
+            "enthalpy": "./models/H_MTAt5.sav"
+        },
+        "priors": [[-4,-2.03],[-2.42,-0.01],[-3,-1.04]],
+        "inputs": {
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
+        }
+        
+        },
+
+    "MTAt6": {"model": {"loglik": "./models/MTAt6.sav",
+            "enthalpy": "./models/H_MTAt6.sav"
+        },
+        "priors": [[-4,-3],[-2,0],[-3,-1]],
+        "inputs": {
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
+        }
+        
+        },
+
+    "MTAt7": {"model": {"loglik": "./models/MTAt7.sav",
+            "enthalpy": "./models/H_MTAt7.sav"
+        },
+        "priors": [[-4,-2],[-2,0],[-3,-1]],
+        "inputs": {
+            "Gcu": 1, "GTPS": 2, "Gqz": 0
         }
         
         }

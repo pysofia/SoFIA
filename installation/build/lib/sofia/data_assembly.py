@@ -5,7 +5,7 @@ import pickle
 import json
 import sys
 
-## String structure: case-thermo_model-recombination/baseline/SEB
+## String structure: case-thermo_model-wall_model (recombination/baseline/SEB)
 
 class assembly:
 
