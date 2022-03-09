@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 
 ## SoFIA
-**So**bol-based sensitivity analysis, **F**orward and **I**nverse uncertainty propagation for **A**pplication to high temperature gases.
+**So**bol-based sensitivity analysis, **F**orward and **I**nverse uncertainty propagation with **A**pplication to high temperature gases.
 ![](image.png)
 ## Installation ##
 
@@ -31,7 +30,5 @@ If they are used they should be cited as:
 	Year = {2021}
 }
 ```
-=======
 # SoFIA
 Sobol sensitivity analysis, Forward and Inverse uncertainty propagation with Application to high temperature gases
->>>>>>> b3f84a4771f8bdf0c74842953ee06da2ce53b16f
