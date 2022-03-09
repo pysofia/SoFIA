@@ -10,8 +10,6 @@ import sys
 class assembly:
 
     def __init__(self,models_json):
-        # with open(data_json) as jfile:
-        #     self.cases = json.load(jfile)
         with open(models_json) as jfile_m:
             self.models = json.load(jfile_m)
         ##

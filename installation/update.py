@@ -23,7 +23,8 @@ shutil.copy(root + '/SoFIA/Fprop/pc.py',dirName)
 shutil.copy(root + '/SoFIA/Applications/nitridation/models.py',dirName)
 shutil.copy(root + '/SoFIA/Applications/nitridation/data_assembly.py',dirName)
 shutil.copy(root + '/SoFIA/Applications/catalysis/data_assembly_cat.py',dirName)
-shutil.copy(root + '/SoFIA/GPR/GPR.py',dirName)
+shutil.copy(root + '/SoFIA/utilities/GPR/GPR.py',dirName)
+shutil.copy(root + '/SoFIA/utilities/run_parallel.py',dirName)
 
 # ---------------------------------
 # Update SoFIA

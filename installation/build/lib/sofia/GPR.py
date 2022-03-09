@@ -60,11 +60,6 @@ class GP:
         res = scipy.optimize.minimize(self.m_log_lik,hyp,method='trust-constr',bounds=bounds,tol=1e-6)
         self.hyperparams = res.x
 
-    # def train(self):
-    #     hyp = self.hyperparams
-    #     res = scipy.optimize.minimize(self.m_log_lik,hyp,method='Nelder-Mead',tol=1e-6)
-    #     self.hyperparams = res.x
-
     def mean(self,x):
         return np.matmul(np.transpose(self.k_star(x)),self.alpha)
 

@@ -6,6 +6,8 @@ import subprocess
 from subprocess import call
 from pyDOE import *
 from operator import itemgetter
+import json
+import sofia.distributions as dist
 
 # ---------------------------------
 #BL Code function
@@ -69,99 +71,46 @@ def BL(x0,gamma):
 # ---------------------------------
 #Functional to minimize
 
-def functional(p0,m,u,ref,gamma,gammaref,gamma_qz):
-
-    x0=p0*ref #Des-normalization
+def mlog_lik(p0,ref,gamma,obj_qw,obj):
+    x0=p0*ref #De-normalization
    
     x1=[x0[0],x0[1],x0[2],x0[3]]
     x2=[x0[0],x0[1],x0[4],x0[3]]
     x3=[x0[0],x0[1],x0[5],x0[3]]
-    
-    L = np.divide(np.absolute(m[0] - BL(x1,gamma)) ** 2, 2 * u[0] ** 2)+np.divide(np.absolute(m[5] - BL(x2,gammaref)) 	 ** 2, 2 * u[5] ** 2)+np.divide(np.absolute(m[7]-BL(x3,gamma_qz)) ** 2, 2 * u[7] ** 2)+np.divide(np.absolute(m[6]-x0[5]) ** 2, 2 * u[6] ** 2)
 
-    for i in range (1,5):
+    qw = [BL(x1,gamma[0]),BL(x2,gamma[1]),BL(x3,gamma[2])] 
+    mlk = 0.
+    for i in range(len(qw)):
+        mlk += obj_qw.get_one_prop_logpdf_value(qw[i],pos=i)
 
-        L=L+np.divide(np.absolute(m[i]-x0[i])**2,2*u[i]**2)
+    for i in range(1:len(x0)):
+        mlk += obj.get_one_prop_logpdf_value(x0[i],pos=i) # Where's H x0[0]
 
-
-    print(x0,L)
-    print('gamma=', gamma, 'gammaref=', gammaref, 'gamma_qz=', gamma_qz)
-
-    return L
+    return -1*mlk
 
 # ---------------------------------
-#Subfunctional to minimize
+#Assembly of likelihood
 
-def subfunctional(p0S,m,u,refS,gamma,gammaref,gamma_qz):
+data_file = "../cases.json"
+case = sys.argv[1]
 
-    x0S=p0S*refS #Des-normalization
-   
-    x1=[x0S[0],m[1],m[2],m[3]]
-    x2=[x0S[0],m[1],m[4],m[3]]
-    x3=[x0S[0],m[1],m[6],m[3]]
+with open(data_file) as jfile_m:
+    data = json.load(jfile_m)
 
-    SL = np.divide(np.absolute(m[0] - BL(x1,gamma)) ** 2, 2 * u[0] ** 2)+np.divide(np.absolute(m[5] - BL(x2,gammaref)) 	 ** 2, 2 * u[5] ** 2)+np.divide(np.absolute(m[7]-BL(x3,gamma_qz)) ** 2, 2 * u[7] ** 2)
+h_qw = [[data[case]['qw_cu']['mean'],data[case]['qw_cu']['std-dev']],[data[case]['qw_qz']['mean'],data[case]['qw_qz']['std-dev']],[data[case]['qw_TPS']['mean'],data[case]['qw_TPS']['std-dev']]]
 
+Lik_qw = dist.Gaussian(len(h_qw),h_qw)
 
-    print(x0S,SL)
-    print('gamma=', gamma, 'gammaref=', gammaref, 'gamma_qz=', gamma_qz)
-    return SL
+h = [[data[case]['Tw_cu']['mean'],data[case]['Tw_cu']['std-dev']],[data[case]['Tw_qz']['mean'],data[case]['Tw_qz']['std-dev']],[data[case]['Tw_TPS']['mean'],data[case]['Tw_TPS']['std-dev']],[data[case]['Pd']['mean'],data[case]['Pd']['std-dev']],[data[case]['Ps']['mean'],data[case]['Ps']['std-dev']]]
 
-# ---------------------------------
-#Minimization algorithm
+Lik = dist.Gaussian(len(h),h)
 
 
-#LHS sampling----------------------
+#LHS sampling and normalization----------------------
 
-chain=np.loadtxt('./chain_gp2.gnu')
-
-xp=np.log10(chain[:,0])
-yp=np.log10(chain[:,1])
-zp=np.log10(chain[:,2])
-
-#gamma1=lhs(3,samples=40)
-#gamma1=np.random.random_sample((10,3))
-
-#gamma = sorted(-gamma1, key=itemgetter(0))
-
-#gamma_qz1=[0.]*len(gamma1)
-#gamma_cu1=[0.]*len(gamma1)
-#gamma_ag1=[0.]*len(gamma1)
-
-gamma_qz1=[0.]*20
-gamma_cu1=[0.]*20
-gamma_ag1=[0.]*20
-
-for i in range(20):
- #gamma_qz1[i]=(max(xp)-min(xp))*-gamma[i][0]+min(xp)
- #gamma_cu1[i]=(max(zp)-min(zp))*-gamma[i][1]+min(zp)
- #gamma_ag1[i]=(max(yp)-min(yp))*-gamma[i][2]+min(yp)
- gamma_qz1[i]=(max(xp)-min(xp))*np.random.random_sample()+min(xp)
- gamma_cu1[i]=0.0
- gamma_ag1[i]=(max(yp)-min(yp))*np.random.random_sample()+min(yp)
-
-#Measurements, uncertainties and i. cond----------------------
-
-#9B
-#m = [2003590.0, 5000.0, 350.0, 177.18, 350.0, 2369670.0, 750.0, 795140.0]  # Put these two in file
-#u = [89960.0, 30.0, 17.5, 1.97, 17.5, 106280.0, 37.5, 35860.0]
-
-#ref = [37951903.47, 5017.5, 305.1416, 176.7, 298.8, 835.78]  # Normalization
-
-#3A
-#m = [700000.0, 1500.0, 350.0, 181.74, 350.0, 720694.0, 750.0, 273236.0]  # Put these two in file
-#u = [31080.0, 9.0, 17.5, 2.76, 17.5, 31998.81, 37.5, 12377.6]
-
-#ref = [18000000.0, 1700.0, 340.0, 170.74, 360.0, 800.0]  # Normalization
-
-m = [2000000.0, 10000.0, 350.0, 60.9, 350.0, 2203810.0, 750.0, 897651.0]  # Put these two in file
-u = [88800.0, 60.0, 17.5, 0.92, 17.5, 97849.16, 37.5, 40663.6]
+gamma=lhs(3,samples=100)
 
 ref = [23000000.0, 11000.0, 340.0, 70.0, 360.0, 800.0]  # Normalization
-
-p0S = 0.8
-
-refS = 37951903.47  # Normalization
 
 p0 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 
@@ -169,17 +118,11 @@ p0 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 
 with open('./output.out', 'w') as out:
 
- for gammas in zip(gamma_qz1,gamma_cu1,gamma_ag1):
+ for i in range(len(gamma)):
      
-     gamma_true = np.power(10, gammas)
-     
-     #gamma_true=[0.00400464907795,0.0139797170591,0.59561893937]
+     gamma_true = np.power(10, gamma[i,:])
 
-     #res0=scipy.optimize.minimize(subfunctional,p0S,args=(m,u,refS,gamma_true[1],gamma_true[2],gamma_true[0]),method='Nelder-Mead')
-
-     #p0 = [res0.x, 1.0, 1.0, 1.0, 1.0, 1.0]
-
-     res=scipy.optimize.minimize(functional,p0,args=(m,u,ref,gamma_true[1],gamma_true[2],gamma_true[0]),method='Nelder-Mead') #options={'xatol': 0.0001, 'fatol': 0.0001})
+     res=scipy.optimize.minimize(mlog_lik,p0,args=(ref,gamma_true,Lik_qw,Lik),method='Nelder-Mead') #options={'xatol': 0.0001, 'fatol': 0.0001})
 
      x=[res.x[0]*ref[0],res.x[1]*ref[1],res.x[2]*ref[2],res.x[3]*ref[3],res.x[4]*ref[4],res.x[5]*ref[5]]
 

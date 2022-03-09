@@ -9,14 +9,14 @@ import sys
 
 class assembly:
 
-    def __init__(self,data_json,models_json):
-        with open(data_json) as jfile:
-            self.cases = json.load(jfile)
+    def __init__(self,models_json):
+        # with open(data_json) as jfile:
+        #     self.cases = json.load(jfile)
         with open(models_json) as jfile_m:
             self.models = json.load(jfile_m)
         ##
         self.case = sys.argv[1]
-        self.lik = pickle.load(open(self.models[self.case]["model"], 'rb'))
+        self.lik = pickle.load(open(self.models[self.case]["model"]["loglik"], 'rb'))
 
     ## Model-related assembly
 

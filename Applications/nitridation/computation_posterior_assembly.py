@@ -21,7 +21,7 @@ mix = mpp.Mixture(opts)
 ##
 # Loading models and data
 assembly = assemble.assembly('./cases.json','./models/models.json',mix)
-measurements = ["Ps","Pd","Tw","density"]
+measurements = ["Ps","Pd","Tw","recession"]
 assembly.lik_hyperparams(measurements)
 assembly.assembly_prior()
 
@@ -37,7 +37,7 @@ sampler = mcmc.metropolis(np.identity(len(assembly.hyp))*0.01,assembly.log_likel
 sampler.seed(res.x)
 sampler.Burn()
 
-nchain = 10000
+nchain = 100000
 XMCMC = np.zeros((nchain,len(assembly.hyp)))
 
 for i in range(nchain):
