@@ -82,6 +82,17 @@ In within the SoFIA library, different modules are defined. The following diagra
     \label{fig:blocks}
 \end{figure}
 
+Apart from the above-mentioned modules, a strong component of the SoFIA library is the applications within aerothermodynamics. In particular, two different modules are included: \texttt{catalysis} and \texttt{nitridation}. Fig.~\ref{fig:app_blocks} shows the different relationships among the different blocks. Seldom databases with the GPR models and data, such as parameter priors and measured quantities, are provided for each experimental case. Combining the different methods included in SoFIA, the user has an array of things that can be computed for material and flow characterization as well as diagnostics.
+
+\begin{figure}[!htb]
+    \center
+    \includegraphics[width=\textwidth]{./figures/App_blocks.png}
+    \caption{The different blocks composing the \texttt{Applications} module in the SoFIA library.}
+    \label{fig:app_blocks}
+\end{figure}
+
+SoFIA not only offers an account of useful mathematical tools but also a principled and centralized way of storing models and data for the different applications.
+
 \section{Usage}
 
 In this section, we describe the basic imports and object calls to use the different features of the SoFIA library.\\
