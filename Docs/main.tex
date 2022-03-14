@@ -31,7 +31,7 @@
 
 \pagenumbering{gobble}
 
-\title{\large \textbf{SoFIA: So}bol-based sensitivity analysis, \textbf{F}orward and \textbf{I}nverse uncertainty propagation for \textbf{A}pplication to high temperature gases}
+\title{\large \textbf{SoFIA: So}bol-based sensitivity analysis, \textbf{F}orward and \textbf{I}nverse uncertainty propagation with \textbf{A}pplication to high temperature gases}
 \date{}
 \sectionfont{\fontsize{12}{15}\selectfont}
 \begin{document}
@@ -60,9 +60,27 @@ Finally, the purpose of SoFIA is to also grow. If you happen to need to implemen
 
 \section{Structure}
 
-In within the SoFIA library, different modules are defined. This section is structured according to the different modules that can be found in SoFIA.\\
+In within the SoFIA library, different modules are defined. The following diagram (Fig.~\ref{fig:blocks}) shows the different constitutive parts of the library. More details about the different modules are given in the next section. 
 
-Create mind map or something and linkages to external functions and codes.
+\begin{itemize}
+    \item The \texttt{Probability distributions} module lays at the base, providing support to the other different modules. It contains both \texttt{Gaussian} and \texttt{Uniform} classes with different methods in each to compute the PDFs, CDFs, inverse CDFs, log PDFs as well as generate random samples from such distributions. 
+    \item The module \texttt{SA} refers to the methods associated with performing Sensitivity Analyses and computing Sobol indices. This module uses the methods included in the \texttt{Probability distributions} module to specify probability distributions for input parameters.
+    \item The \texttt{Fprop} module contains a basic implementation of a polynomial chaos expansion. It also uses the methods included in \texttt{Probability distributions} to specify the expansion germ's distributions.
+    \item The \texttt{Iprop} module contains all the methods involved in performing Markov Chain Monte Carlo (MCMC) sampling following the Metropolis-Hastings algorithm with adapptation of the covariance matrix through a burn-in phase. Furthermore, it also contains a class of diagnostics to assess the chain convergence. A simple implementation of the Hamiltonian Monte Carlo (HMC) sampling algorithm is also implemented although it has not been tested.
+    \item Apart from the three main modules, SoFIA includes some utilities to make any of the tasks more efficient. This is contain in the folder \texttt{Utilities}:
+    \begin{enumerate}
+        \item The \texttt{MPI} module provides the capability of parallelizing tasks such as evaluating a model according to independently sampled inputs, as well as drawing independent samples from a probability distribution. It uses the python module \texttt{mpi4py}.
+        \item The module \texttt{GPR} refers to Gaussian Process Regression. It implements the different parts of a Gaussian process model, as well as the choice to train it and evaluate its mean and variance in new points.
+    Both modules can be used in any of the main three modules described above to speed-up computations.
+    \end{enumerate}
+\end{itemize}
+
+\begin{figure}[!htb]
+    \center
+    \includegraphics[width=0.9\textwidth]{./figures/block_diagram.png}
+    \caption{The different blocks composing the SoFIA library.}
+    \label{fig:blocks}
+\end{figure}
 
 \section{Usage}
 
@@ -135,7 +153,7 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 ```
 \quoteOFF
 
-\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} Under development. For the moment, it includes a simple polynomial chaos construction. Sample-based methods can be built with the functionalities already included in the library. \\
+\noindent\textbf{\small Forward uncertainty propagation (\texttt{Fprop}).} This module is placed in \texttt{SoFIA/Fprop}. For the moment, it includes a simple polynomial chaos construction. Sample-based methods can be built with the functionalities already included in the library. \\
 
 \quoteON
 ```
@@ -165,7 +183,7 @@ The concrete example with the Ishigami function can be found in \texttt{SA/examp
 ```
 \quoteOFF
 
-\noindent\textbf{\small Applications (\texttt{Applications}).} Under development. It will include scripts with which to reproduce the results obtained in my PhD thesis. These scripts will put together different modules from SoFIA to perform all the computations. The only inputs to be provided will be the external model evaluations and inputs from which to construct Gaussian process surrogates and carry out the inverse and/or forward analyses. The data from the simulations I used in my thesis will also be available in another repository.\\
+\noindent\textbf{\small Applications (\texttt{Applications}).} This module can be accessed in \texttt{SoFIA/Applications} It includes scripts with which to reproduce the results obtained in my PhD thesis. These scripts put together different modules from SoFIA to perform all the computations. The only inputs to be provided are the external model evaluations and inputs from which to construct Gaussian process surrogates and carry out the inverse and/or forward analyses. The data from the simulations I used in my thesis are also available in different \texttt{json} files. The applications here included are related to the estimation of catalysis and nitridation parameters for TPS materials, as well as an adiabatic reactor example. For code snippets and examples of their usage, the reader is directed to \texttt{SoFIA/Docs/jup\_notebooks/env}. That folder contains a virtual environment with the jupyter notebooks \texttt{catalysis\_demo.ipynb, nitridation\_demo.ipynb}, and \texttt{Adiabatic\_reactor.ipynb}. Some particular examples are offered in the next section.\\
 
 \section{Examples}
 
@@ -403,13 +421,13 @@ If we were to run a sensitivity analysis again, this time with the initial tempe
     \label{fig:ad_react_SA_Tinit2}
 \end{figure}
 
-\noindent \textbf{Heterogeneous catalysis for reusable TPS ground testing and enthalpy rebuilding.} This application pertains to my PhD thesis work. We calibrate a chemically reacting flow model in chemical non-equilibrium with plasma wind tunnel experimental data. We look for the resulting uncertainty on the catalytic coefficients of the different materials tested for each independent experimental run. For more technical details see footnote\footnote{A. del Val, Bayesian calibration and assessment of gas-surface interaction models and experiments in atmospheric entry plasmas, IPP/VKI, 2021 - \url{www.doi.org/10.13140/RG.2.2.27055.82089}}.
+\noindent \textbf{Heterogeneous catalysis for reusable TPS ground testing and enthalpy rebuilding.} This application pertains to my PhD thesis work. We calibrate a chemically reacting flow model in chemical non-equilibrium with plasma wind tunnel experimental data. We look for the resulting uncertainty on the catalytic coefficients of the different materials tested for each independent experimental run as well as the free stream boundary condition (enthalpy). For more technical details see footnote\footnote{A. del Val, Bayesian calibration and assessment of gas-surface interaction models and experiments in atmospheric entry plasmas, IPP/VKI, 2021 - \url{www.doi.org/10.13140/RG.2.2.27055.82089}}.
 
-In SoFIA, in the \texttt{Applications/catalysis/models} folder, we include the saved Gaussian Process (GP) models for each experimental run of names \texttt{MTAt1,2,...}. These GP models are built to approximate the log-likelihood functions of the experiments. In turn, such models are used to run an MCMC algorithm and compute the marginal posterior distributions on the quantities of interest (catalytic efficiency parameters).
+In SoFIA, in the \texttt{Applications/catalysis/models} folder, we include the saved Gaussian Process (GP) models for each experimental run of names \texttt{MTAt1,2,...}. These GP models are built to approximate the log-likelihood functions of the experiments. In turn, such models are used to run an MCMC algorithm and compute the marginal posterior distributions of the quantities of interest (catalytic efficiency parameters). Such posterior distributions are propagated through another set of GP surrogates with the names \texttt{H\_case\_name.sav} to obtain the rebuilt free stream enthalpy.
 
 Two major ``ingredients'' are used for the computation of the posterior in \texttt{computation\_posterior.py} the \texttt{json} file \texttt{models.json}, and the file \texttt{data\_assembly\_cat.py}. \\
 
-\noindent The file \texttt{models.json} contains a dictionary where the models can be called together with the priors used for their input variables and the order or the inputs to the model in the form of indexes (\texttt{inputs} in the \texttt{json} file dictionary).\\
+\noindent The file \texttt{models.json} contains a dictionary where the models can be called together with the priors used for their input variables and the order of the inputs to the model in the form of indexes (\texttt{inputs} in the \texttt{json} file dictionary).\\
 
 \noindent The file \texttt{data\_assembly\_cat.py} contains the class to assemble the likelihood function needed for the subsequent Bayesian analysis. In it, the log-likelihood function is loaded the hyperparameters for the different priors as well as de-normalization of the inputs are specified.\\
 
@@ -417,18 +435,28 @@ Two major ``ingredients'' are used for the computation of the posterior in \text
 
 \begin{enumerate}
     \item Run the optimal algorithm in a grid of points \\
-    (\texttt{catalysis/}\texttt{utilities/}\texttt{sampler}\texttt{\_opt}\texttt{\_loglik.py}). This first step is suposed to be custom-made as it will depend on the solver and how it inputs and outputs data. For the particular case of the Boundary Layer Code at VKI, a dirty script I made is included. This script contains the \texttt{BL} function which computes the heat flux given a set of parameters \texttt{x0} and the catalytic parameters \texttt{gamma} which are vectors. The function \texttt{functional} is the function to minimize, it is the negative log-likelihood function. The important snippet of this script is the \texttt{main loop} which basically goes over the grid of gamma values and finds the optimal values of the log-likelihood function by searching on \texttt{x0}. The values of \texttt{x0} and \texttt{gamma}, together with the negative log-likelihood values are written in the file \texttt{output.out}. NOTE: We are looking for the maximizers of the log-likelihood function. As we use an optimization algorithm (Nelder-Mead) which minimizes an objective function, we change the sign of the log-likelihood function to be the negative log-likelihood function, and this is the value that is printed out in \texttt{output.out}.
-    \item Use \texttt{catalysis/models/save\_GP.py} and \texttt{catalysis/models/save\_H\_GP.py} to save GP models that approximate the optimal log-likelihood function and the optimal enthalpy based on the points previously computed.
+    (\texttt{catalysis/}\texttt{utilities/}\texttt{sampler}\texttt{\_opt}\texttt{\_loglik.py}). This first step is suposed to be custom-made as it will depend on the solver and how it inputs and outputs data. For the particular case of the Boundary Layer Code at VKI, a model script I made is included. This script contains the \texttt{BL} function which computes the heat flux given a set of parameters \texttt{x0} and the catalytic parameters \texttt{gamma} which are vectors. The function \texttt{functional} is the function to minimize, it is the negative log-likelihood function. The important snippet of this script is the \texttt{main loop} which basically goes over the grid of gamma values and finds the optimal values of the log-likelihood function by searching on \texttt{x0}. The values of \texttt{x0} and \texttt{gamma}, together with the negative log-likelihood values are written in the file \texttt{output.out}. NOTE: We are looking for the maximizers of the log-likelihood function. As we use an optimization algorithm (Nelder-Mead) which minimizes an objective function, we change the sign of the log-likelihood function to be the negative log-likelihood function, and this is the value that is printed out in \texttt{output.out}.
+    \item Use \texttt{catalysis/models/save\_GP.py} and \texttt{catalysis/models/save\_H\_GP.py} to save GP models that approximate the optimal log-likelihood function and the optimal enthalpy based on the points previously computed. NOTE: You can do this either with the implemented \texttt{SoFIA/utilities/GPR} module or with the \textit{scikit-learn} library.
     \item In the file \texttt{catalysis/models/models.json}, save the data of your case.
     \item Use the model to compute the posterior distribution and obtain the resulting chain from the MCMC algorithm with \texttt{catalysis/computation\_posterior.py}. The resulting MCMC chain can be used in \texttt{catalysis/computation\_H\_optimal.py} to compute the $H^{\mathrm{opt}}$ enthalpy.
     \item Check diagnostics.
-    \item Re-run additional points of the optimal log-likelihood algorithm in the area where MCMC drew points.
+    \item Re-run additional points of the optimal log-likelihood algorithm in the area where MCMC drew points in a Monte Carlo fashion.
     \item Start from point 2.
 \end{enumerate}
 
-\textbf{Proposed diagnostics.} A tricky issue may arise for non-experts in these analyses. The workflow described cannot be run blindly, without thoroughly asserting the quality of the results. As this requires some in-depth knowledge of the analyses, I propose here a quick way of checking is the GP surrogate + MCMC sampling give reasonable results or if the surrogate estimation would need additional points.
+\textbf{Proposed diagnostics.} A tricky issue may arise for non-experts in these analyses. The workflow described cannot be run blindly, without thoroughly assessing the quality of the results. As this requires some in-depth knowledge of the analyses, I propose here a quick way of checking if the GP surrogate + MCMC sampling give reasonable results or if the surrogate estimation would need additional points. There are two sources of problems in this procedure. Once we have a GP surrogate of the optimal log-likelihood to work with, we need to check if the MCMC chain is converged. For this, 3 different diagnostics are presented in \texttt{Docs/jup\_notebooks/catalysis\_demo.py}. We compute the acceptance rate, we plot the trace of the chain and the autocorrelation function. That is enough to have a thorough assessment. Second, the GP surrogate might not be good at all, for this purpose we propose the following: plot the chain samples on the S-curves as done at the end of the script in \texttt{Docs/jup\_notebooks/catalysis\_demo.py}. This gives you a quick view of the samples drawn from the posterior and you can check whether or not they are in an area where they would be expected to be. If you know the chain is converged but the samples just don't really follow the S-curves or seem to be in weird places, this is most likely due to a bad surrogate. In such case, go back to the code and add a few extra points until this last diagnostics is satisfactory.\\
 
-\noindent \textbf{Nitrogen ablation.}
+\noindent \textbf{Nitrogen ablation.} This is another application that falls from my PhD work. We calibrate a chemically reacting flow model in chemical non-equilibrium with plasma wind tunnel experimental data. We look for the resulting uncertainty on the nitridation reaction efficiencies for each independent experimental run. We do this with different models that encapsulate different assumptions. For more technical details see footnote\footnote{A. del Val, Bayesian calibration and assessment of gas-surface interaction models and experiments in atmospheric entry plasmas, IPP/VKI, 2021 - \url{www.doi.org/10.13140/RG.2.2.27055.82089}}.
+
+In SoFIA, in the \texttt{Applications/nitridation/models} folder, we include the saved Gaussian Process (GP) models for each experimental run of names \texttt{G4,5,...}. These GP models are built to approximate the logarithm of the recession rate and CN densities measured in the boundary layer. In turn, such models are used to run an MCMC algorithm and compute the marginal posterior distributions of the quantities of interest (nitridation efficiency parameters). The file \texttt{nitridation/models/models.json} contains dictionaries that basically index the location of the models to be loaded for each physical model and experimental case of interest. Further, the file \texttt{nitridation/cases.json} contains the experrimental data and Non-Dimensional Parameters (NDPs) for each case.
+
+For an example on how to run nitridation cases, refer to \texttt{SoFIA/Docs/jup\_notebooks/env/nitridation\_demo.ipynb}.
+
+To run completely new cases the \textbf{suggested workflow} is as follows:
+
+\begin{enumerate}
+    \item Run the model in a grid of points
+\end{enumerate}
 
 
 \end{document}
